@@ -11,7 +11,7 @@ class ForwardController extends Controller
 {
     public function receive(Request $request)
     {
-        Notification::route('telegram', '-519569898')
+        Notification::route('telegram', env('TELEGRAM_CHAT_ID'))
             ->notify(new WebhookForward($request));
 
         return response()->json([
