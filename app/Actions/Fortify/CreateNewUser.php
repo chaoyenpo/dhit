@@ -40,6 +40,19 @@ class CreateNewUser implements CreatesNewUsers
         });
     }
 
+    public function createByProvider(array $input)
+    {
+        return DB::transaction(function () use ($input) {
+            return tap(User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'provider_id' => $input['provider_id'],
+            ]), function (User $user) {
+                $this->createTeam($user);
+            });
+        });
+    }
+
     /**
      * Create a personal team for the user.
      *
@@ -50,7 +63,7 @@ class CreateNewUser implements CreatesNewUsers
     {
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'name' => explode(' ', $user->name, 2)[0] . "'s Team",
             'personal_team' => true,
         ]));
     }

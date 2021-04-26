@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WebhookRecevierController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,17 +14,16 @@ use Inertia\Inertia;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+Route::get('/', [DashboardController::class, 'welcome']);
+
+Route::get('/auth/redirect', [AuthController::class, 'redirect'])->name('login.google');
+Route::get('/auth/callback', [AuthController::class, 'callback']);
+
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+    Route::get('/webhooks', [WebhookRecevierController::class, 'show'])->name('webhooks');
+    Route::get('/webhooks/create', [WebhookRecevierController::class, 'create'])->name('webhooks.create');
+    Route::post('/webhooks', [WebhookRecevierController::class, 'store'])->name('webhooks.store');
 });
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
