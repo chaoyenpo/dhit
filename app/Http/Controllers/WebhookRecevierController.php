@@ -28,4 +28,11 @@ class WebhookRecevierController extends Controller
     {
         return Inertia::render('Webhook/Create');
     }
+
+    public function edit(Request $request)
+    {
+        return Inertia::render('Webhook/Edit', [
+            'webhookRecevier' => new ResourcesWebhookRecevier(WebhookRecevier::find($request->id)),
+        ]);
+    }
 }

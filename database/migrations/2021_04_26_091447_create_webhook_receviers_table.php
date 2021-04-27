@@ -17,7 +17,7 @@ class CreateWebhookReceviersTable extends Migration
             $table->id();
             $table->foreignId('team_id');
             $table->foreignId('user_id');
-            $table->foreignId('telegram_bot_id')->nullable();
+            $table->foreignId('bot_id')->nullable();
             $table->string('token');
             $table->json('chat');
             $table->timestamps();

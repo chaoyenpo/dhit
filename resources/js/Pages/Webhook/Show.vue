@@ -62,13 +62,20 @@
                         </p>
                       </div>
                       <div>
-                        <jet-button
-                          type="button"
-                          :class="{ 'opacity-25': enabling }"
-                          :disabled="enabling"
+                        <inertia-link
+                          :href="route('webhooks.edit')"
+                          :active="route().current('webhooks.edit')"
+                          :data="{ id: webhookRecevier.id }"
+                          preserve-state
                         >
-                          編輯
-                        </jet-button>
+                          <jet-button
+                            type="button"
+                            :class="{ 'opacity-25': enabling }"
+                            :disabled="enabling"
+                          >
+                            編輯
+                          </jet-button>
+                        </inertia-link>
                       </div>
                     </div>
                   </li>

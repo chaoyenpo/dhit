@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        建立 Webhook 接收器
+        設定 Webhook 接收器
       </h2>
     </template>
 
