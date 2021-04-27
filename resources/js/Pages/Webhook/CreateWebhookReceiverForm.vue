@@ -104,7 +104,16 @@ export default {
       axios.get("/api/botLink").then((response) => {
         tgWindow.location.href = response.data.url;
 
-        // setTimeout(() => tgWindow.close(), 3000);
+        Echo.private(`webhook.receiver.${response.data.token}`).listen(
+          "TelegramConnected",
+          (e) => {
+            tgWindow.close();
+
+            this.$inertia.get("/webhooks/edit", {
+              id: e.id,
+            });
+          }
+        );
       });
     },
   },

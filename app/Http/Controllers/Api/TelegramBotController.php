@@ -6,9 +6,10 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\WebhookRecevier;
+use App\Events\TelegramConnected;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redis;
 
 class TelegramBotController extends Controller
 {
@@ -18,12 +19,23 @@ class TelegramBotController extends Controller
 
         return response()->json([
             "url" => 'https://t.me/fishsiribot?startgroup=' . $token,
+            "token" => $token,
         ]);
     }
 
     public function callback(Request $request)
     {
-        $token = explode(' ', data_get($request, 'message.text'))[1];
+        Log::debug("callback", $request->all());
+
+        try {
+            $token = explode(' ', data_get($request, 'message.text'))[1];
+        } catch (\Throwable $th) {
+            return response()->json([
+                'ok' => true,
+                'result' => false,
+                'description' => '此操作已失效。'
+            ]);
+        }
 
         list($userId, $teamId) = explode(' ', Cache::get($token));
 
@@ -31,12 +43,14 @@ class TelegramBotController extends Controller
 
         Cache::forget($token);
 
-        WebhookRecevier::create([
+        $webhookRecevier = WebhookRecevier::create([
             'team_id'=> $teamId,
             'user_id'=> $user->id,
             'token' => Str::random(32),
             'chat' => data_get($request, 'message.chat'),
         ]);
+
+        TelegramConnected::dispatch($webhookRecevier->id, $token);
 
         return response()->json([
             'ok' => true,
