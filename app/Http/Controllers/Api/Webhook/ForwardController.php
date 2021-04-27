@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Webhook;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Notifications\WebhookForward;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 
 class ForwardController extends Controller

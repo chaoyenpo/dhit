@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Webhook
+        Webhook 接收器
       </h2>
     </template>
 
@@ -29,7 +29,10 @@
             </div>
           </div>
 
-          <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
+          <div
+            v-if="$page.props.webhookReceviers.length > 0"
+            class="p-6 sm:px-20 bg-white border-b border-gray-200"
+          >
             <div class="text-2xl">
               配置
             </div>
@@ -38,24 +41,24 @@
               <div class="flow-root mt-6">
                 <ul class="-my-5 divide-y divide-gray-200">
                   <li
-                    v-for="person in people"
-                    :key="person.handle"
+                    v-for="webhookRecevier in $page.props.webhookReceviers"
+                    :key="webhookRecevier.id"
                     class="py-4"
                   >
                     <div class="flex items-center space-x-4">
                       <div class="flex-shrink-0">
                         <img
                           class="h-8 w-8 rounded-full"
-                          :src="person.imageUrl"
+                          src="https://ui-avatars.com/api/?name=TG&color=7F9CF5&background=EBF4FF"
                           alt=""
                         />
                       </div>
                       <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-gray-900 truncate">
-                          以 Siri 發布到 {{ person.name }}
+                          以 Siri 發布到 {{ webhookRecevier.chat.title }}
                         </p>
                         <p class="text-sm text-gray-500 truncate">
-                          {{ person.handle }} on {{ datetime }}
+                          {{ webhookRecevier.user.name }} on {{ webhookRecevier.created_at }}
                         </p>
                       </div>
                       <div>
