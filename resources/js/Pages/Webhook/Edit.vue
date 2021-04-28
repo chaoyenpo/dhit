@@ -30,12 +30,12 @@
             </template>
 
             <template #content>
-              {{`https://${hostname}/api/webhookReceiver/${$page.props.webhookReceiver.token}`}}
+              {{`http://${hostname}/api/webhookReceiver/${$page.props.webhookReceiver.token}`}}
 
               <div class="mt-5">
                 <jet-button
                   type="button"
-                  v-clipboard="`https://${hostname}/api/webhookReceiver/${$page.props.webhookReceiver.token}`"
+                  v-clipboard="`http://${hostname}/api/webhookReceiver/${$page.props.webhookReceiver.token}`"
                   v-clipboard:success="onSuccess"
                 >
                   {{copyLabel}}
