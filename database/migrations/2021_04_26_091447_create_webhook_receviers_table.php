@@ -31,6 +31,6 @@ class CreateWebhookReceiversTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('webhook_Receivers');
+        Schema::dropIfExists('webhook_receivers');
     }
 }
