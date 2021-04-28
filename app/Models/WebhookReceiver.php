@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WebhookRecevier extends Model
+class WebhookReceiver extends Model
 {
     use HasFactory;
 

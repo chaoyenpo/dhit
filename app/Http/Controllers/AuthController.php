@@ -23,13 +23,13 @@ class AuthController extends Controller
 
     public function callback(CreatesNewUsers $creator)
     {
-        $user = Socialite::driver('google')->user();
+        $googleUser = Socialite::driver('google')->user();
 
-        if (!$user = User::whereProviderId($user->getId())->first()) {
+        if (!$user = User::whereProviderId($googleUser->getId())->first()) {
             event(new Registered($user = $creator->createByProvider([
-                'email' => $user->getEmail(),
-                'name' => $user->getName(),
-                'provider_id' => $user->getId(),
+                'email' => $googleUser->getEmail(),
+                'name' => $googleUser->getName(),
+                'provider_id' => $googleUser->getId(),
             ])));
         }
 

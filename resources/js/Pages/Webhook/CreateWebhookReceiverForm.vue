@@ -109,7 +109,7 @@ export default {
           (e) => {
             tgWindow.close();
 
-            this.$inertia.get("/webhooks/edit", {
+            this.$inertia.get(route("webhooks.edit"), {
               id: e.id,
             });
           }

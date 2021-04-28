@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WebhookRecevier extends JsonResource
+class WebhookReceiver extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,6 +19,7 @@ class WebhookRecevier extends JsonResource
             'user' => $this->user,
             'chat' => $this->chat,
             'token' => $this->token,
+            'malfunction' => $this->malfunction,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

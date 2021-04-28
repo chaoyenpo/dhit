@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\WebhookRecevier;
+use App\Models\WebhookReceiver;
 use App\Events\TelegramConnected;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use App\Notifications\TelegramBotConnected;
+use Illuminate\Support\Facades\Notification;
 
 class TelegramBotController extends Controller
 {
@@ -29,6 +31,7 @@ class TelegramBotController extends Controller
 
         try {
             $token = explode(' ', data_get($request, 'message.text'))[1];
+            list($userId, $teamId) = explode(' ', Cache::get($token));
         } catch (\Throwable $th) {
             return response()->json([
                 'ok' => true,
@@ -37,20 +40,21 @@ class TelegramBotController extends Controller
             ]);
         }
 
-        list($userId, $teamId) = explode(' ', Cache::get($token));
-
         $user = User::find($userId);
 
         Cache::forget($token);
 
-        $webhookRecevier = WebhookRecevier::create([
+        $webhookReceiver = WebhookReceiver::create([
             'team_id'=> $teamId,
             'user_id'=> $user->id,
             'token' => Str::random(32),
             'chat' => data_get($request, 'message.chat'),
         ]);
 
-        TelegramConnected::dispatch($webhookRecevier->id, $token);
+        Notification::route('telegram', data_get($request, 'message.chat.id'))
+            ->notify(new TelegramBotConnected());
+
+        TelegramConnected::dispatch($webhookReceiver->id, $token);
 
         return response()->json([
             'ok' => true,

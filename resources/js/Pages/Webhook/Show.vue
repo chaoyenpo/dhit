@@ -30,7 +30,7 @@
           </div>
 
           <div
-            v-if="$page.props.webhookReceviers.length > 0"
+            v-if="$page.props.webhookReceivers.length > 0"
             class="p-6 sm:px-20 bg-white border-b border-gray-200"
           >
             <div class="text-2xl">
@@ -41,8 +41,8 @@
               <div class="flow-root mt-6">
                 <ul class="-my-5 divide-y divide-gray-200">
                   <li
-                    v-for="webhookRecevier in $page.props.webhookReceviers"
-                    :key="webhookRecevier.id"
+                    v-for="webhookReceiver in $page.props.webhookReceivers"
+                    :key="webhookReceiver.id"
                     class="py-4"
                   >
                     <div class="flex items-center space-x-4">
@@ -55,21 +55,27 @@
                       </div>
                       <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-gray-900 truncate">
-                          以 Siri 發布到 {{ webhookRecevier.chat.title }}
+                          以 Siri 發布到 {{ webhookReceiver.chat.title }}
                         </p>
                         <p class="text-sm text-gray-500 truncate">
-                          {{ webhookRecevier.user.name }} on {{ webhookRecevier.created_at }}
+                          {{ webhookReceiver.user.name }} on {{ webhookReceiver.created_at }}
                         </p>
                       </div>
-                      <div>
+                      <div class="flex items-center">
+                        <div>
+                          <p :class="[!webhookReceiver.malfunction ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800', 'inline-flex items-baseline px-2.5 py-0.5 rounded-full text-sm font-medium md:mt-2 lg:mt-0']">
+                            {{!webhookReceiver.malfunction ? '工作中' : '故障'}}
+                          </p>
+                        </div>
                         <inertia-link
                           :href="route('webhooks.edit')"
                           :active="route().current('webhooks.edit')"
-                          :data="{ id: webhookRecevier.id }"
+                          :data="{ id: webhookReceiver.id }"
                           preserve-state
                         >
                           <jet-button
                             type="button"
+                            class="ml-4"
                             :class="{ 'opacity-25': enabling }"
                             :disabled="enabling"
                           >

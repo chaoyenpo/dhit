@@ -30,12 +30,12 @@
             </template>
 
             <template #content>
-              {{`https://${hostname}/webhookReceiver?token=${$page.props.webhookRecevier.token}`}}
+              {{`https://${hostname}/api/webhookReceiver/${$page.props.webhookReceiver.token}`}}
 
               <div class="mt-5">
                 <jet-button
                   type="button"
-                  v-clipboard="`https://${hostname}/webhookReceiver?token=${$page.props.webhookRecevier.token}`"
+                  v-clipboard="`https://${hostname}/api/webhookReceiver/${$page.props.webhookReceiver.token}`"
                   v-clipboard:success="onSuccess"
                 >
                   {{copyLabel}}
@@ -60,7 +60,7 @@
             </template>
 
             <template #content>
-              {{$page.props.webhookRecevier.chat.title}}
+              {{$page.props.webhookReceiver.chat.title}}
 
               <div class="mt-5">
                 <jet-button
@@ -102,6 +102,13 @@
               </jet-button>
             </template>
           </jet-form-section>
+
+          <jet-section-border />
+
+          <delete-webhook-receiver-form
+            class="mt-10 sm:mt-0"
+            :webhook-receiver="$page.props.webhookReceiver"
+          />
         </div>
       </div>
     </div>
@@ -118,6 +125,7 @@ import JetButton from "@/Jetstream/Button";
 import JetInput from "@/Jetstream/Input";
 import JetFormSection from "@/Jetstream/FormSection";
 import UpdateMessageFormatForm from "./UpdateMessageFormatForm";
+import DeleteWebhookReceiverForm from "./DeleteWebhookReceiverForm";
 
 const hostname = window.location.hostname;
 
@@ -131,6 +139,7 @@ export default {
     JetInput,
     JetFormSection,
     UpdateMessageFormatForm,
+    DeleteWebhookReceiverForm,
   },
   setup() {
     const copyLabel = ref("複製");

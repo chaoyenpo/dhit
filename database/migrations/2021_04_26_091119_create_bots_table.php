@@ -15,11 +15,10 @@ class CreateBotsTable extends Migration
     {
         Schema::create('bots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id');
-            $table->foreignId('user_id');
+            $table->foreignId('team_id')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->string('token');
-            $table->string('name');
-            $table->timestamp('webhook_setup_at')->nullable();
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

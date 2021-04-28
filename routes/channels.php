@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\WebhookRecevier;
+use App\Models\WebhookReceiver;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Broadcast;
 
