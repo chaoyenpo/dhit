@@ -30,7 +30,7 @@
           </div>
 
           <div
-            v-if="$page.props.webhookReceivers.length > 0"
+            v-if="$page.props.webhookReceivers?.length > 0"
             class="p-6 sm:px-20 bg-white border-b border-gray-200"
           >
             <div class="text-2xl">
