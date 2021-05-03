@@ -17,7 +17,8 @@ class TelegramBotController extends Controller
 {
     public function link(Request $request)
     {
-        Cache::put($token = Str::random(32), auth()->user()->id . ' ' . auth()->user()->currentTeam->id, 3600);
+        $token = $request->token ?: Str::random(32);
+        Cache::put($token, auth()->user()->id . ' ' . auth()->user()->currentTeam->id, 3600);
 
         return response()->json([
             "url" => 'https://t.me/fishsiribot?startgroup=' . $token,
@@ -27,7 +28,7 @@ class TelegramBotController extends Controller
 
     public function callback(Request $request)
     {
-        Log::debug("callback", $request->all());
+        Log::debug("tg bot callback", $request->all());
 
         try {
             $token = explode(' ', data_get($request, 'message.text'))[1];
@@ -44,10 +45,11 @@ class TelegramBotController extends Controller
 
         Cache::forget($token);
 
-        $webhookReceiver = WebhookReceiver::create([
+        $webhookReceiver = WebhookReceiver::firstOrCreate([
+            'token' => $token,
+        ], [
             'team_id'=> $teamId,
             'user_id'=> $user->id,
-            'token' => Str::random(32),
             'chat' => data_get($request, 'message.chat'),
         ]);
 
