@@ -15,24 +15,13 @@ use Illuminate\Support\Facades\Notification;
 
 class TelegramBotController extends Controller
 {
-    public function link(Request $request)
-    {
-        $token = $request->token ?: Str::random(32);
-        Cache::put($token, auth()->user()->id . ' ' . auth()->user()->currentTeam->id, 3600);
-
-        return response()->json([
-            "url" => 'https://t.me/fishsiribot?startgroup=' . $token,
-            "token" => $token,
-        ]);
-    }
-
     public function callback(Request $request)
     {
         Log::debug("tg bot callback", $request->all());
 
         try {
             $token = explode(' ', data_get($request, 'message.text'))[1];
-            list($userId, $teamId) = explode(' ', Cache::get($token));
+            list($userId, $teamId, $botId) = explode(' ', Cache::get($token));
         } catch (\Throwable $th) {
             return response()->json([
                 'ok' => true,
@@ -41,20 +30,19 @@ class TelegramBotController extends Controller
             ]);
         }
 
-        $user = User::find($userId);
-
         Cache::forget($token);
 
-        $webhookReceiver = WebhookReceiver::firstOrCreate([
+        $webhookReceiver = WebhookReceiver::updateOrCreate([
             'token' => $token,
         ], [
             'team_id'=> $teamId,
-            'user_id'=> $user->id,
+            'user_id'=> $userId,
+            'bot_id' => $botId,
             'chat' => data_get($request, 'message.chat'),
         ]);
 
         Notification::route('telegram', data_get($request, 'message.chat.id'))
-            ->notify(new TelegramBotConnected());
+            ->notify(new TelegramBotConnected($webhookReceiver->bot->token));
 
         TelegramConnected::dispatch($webhookReceiver->id, $token);
 

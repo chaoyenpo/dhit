@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Query\Expression;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateBotsTable extends Migration
 {
@@ -19,6 +20,8 @@ class CreateBotsTable extends Migration
             $table->foreignId('user_id')->nullable();
             $table->string('token');
             $table->string('name')->nullable();
+            $table->string('username')->nullable();
+            $table->json('meta')->default(new Expression('(JSON_OBJECT())'));
             $table->timestamps();
         });
     }

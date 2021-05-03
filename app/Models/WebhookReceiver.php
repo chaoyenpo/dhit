@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Bot;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class WebhookReceiver extends Model
 {
@@ -18,5 +19,10 @@ class WebhookReceiver extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function bot()
+    {
+        return $this->belongsTo(Bot::class);
     }
 }

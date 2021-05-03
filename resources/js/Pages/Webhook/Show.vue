@@ -55,7 +55,7 @@
                       </div>
                       <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-gray-900 truncate">
-                          以 Siri 發布到 {{ webhookReceiver.chat.title }}
+                          以 {{ webhookReceiver.bot.name }} 發布到 {{ webhookReceiver.chat.title }}
                         </p>
                         <p class="text-sm text-gray-500 truncate">
                           {{ webhookReceiver.user.name }} on {{ webhookReceiver.created_at }}

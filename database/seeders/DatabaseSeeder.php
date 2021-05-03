@@ -15,9 +15,5 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-
-        Bot::create([
-            'token' => config('services.telegram-bot-api.token'),
-        ]);
     }
 }

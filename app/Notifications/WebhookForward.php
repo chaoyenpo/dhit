@@ -43,7 +43,7 @@ class WebhookForward extends Notification
                 // Telegram 只能發送 4096 bytes 的資料，扣掉 Str:limit end 結尾的三個點，只剩下 4093 bytes。
                 // 未來加入分批發送功能（可透過 Content-Length 取得字串長度再去 Chunk）。
                 '*' . Str::limit($this->praseRequestContent(), 4093) . '*'
-            );
+            )->token($this->webhookReceiver->bot->token);
     }
 
     public function failed(\Exception $e)

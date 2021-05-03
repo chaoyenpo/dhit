@@ -10,4 +10,8 @@ class Bot extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'meta' => 'object',
+    ];
 }

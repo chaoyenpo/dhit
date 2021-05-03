@@ -38,27 +38,24 @@
       </div>
 
       <div class="col-span-6 sm:col-span-4">
-        <jet-label value="機器人" />
 
-        <div class="mt-4 space-y-4">
-          <div class="flex items-center">
-            <input
-              id="bot"
-              name="bot"
-              type="radio"
-              class="focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300"
-              checked
-            />
-            <label
-              for="bot"
-              class="flex items-center ml-3"
-            >
-              <div class="leading-tight">
-                <div>Siri (預設)</div>
-              </div>
-            </label>
-          </div>
-        </div>
+        <jet-label
+          for="bot_token"
+          value="Bot Token"
+        />
+
+        <jet-input
+          id="bot_token"
+          type="text"
+          class="mt-1 block w-full"
+          v-model="form.bot_token"
+        />
+
+        <jet-input-error
+          :message="form.errors.bot_token"
+          class="mt-2"
+        />
+
       </div>
     </template>
 
@@ -67,7 +64,7 @@
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
       >
-        連接機器人到聊天室中
+        連接 Bot 到聊天室中
       </jet-button>
     </template>
   </jet-form-section>
@@ -92,28 +89,15 @@ export default {
   data() {
     return {
       form: this.$inertia.form({
-        name: "",
+        bot_token: "",
       }),
     };
   },
 
   methods: {
     createWebhookReceiver() {
-      const tgWindow = window.open();
-
-      axios.get("/api/botLink").then((response) => {
-        tgWindow.location.href = response.data.url;
-
-        Echo.private(`webhook.receiver.${response.data.token}`).listen(
-          "TelegramConnected",
-          (e) => {
-            tgWindow.close();
-
-            this.$inertia.get(route("webhooks.edit"), {
-              id: e.id,
-            });
-          }
-        );
+      this.form.post(route("webhooks"), {
+        errorBag: "botLink",
       });
     },
   },

@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\WebhookReceiver as ResourcesWebhookReceiver;
-use App\Models\WebhookReceiver;
-use Illuminate\Http\Request;
+use App\Models\Bot;
 use Inertia\Inertia;
+use ReflectionMethod;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\WebhookReceiver;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Jetstream\RedirectsActions;
+use Illuminate\Support\Facades\Validator;
+use NotificationChannels\Telegram\Telegram;
+use Illuminate\Validation\ValidationException;
+use App\Http\Resources\WebhookReceiver as ResourcesWebhookReceiver;
 
 class WebhookReceiverController extends Controller
 {
@@ -14,17 +21,88 @@ class WebhookReceiverController extends Controller
 
     public function show(Request $request)
     {
-        $items = WebhookReceiver::whereTeamId($request->user()->currentTeam->id)
-        ->whereUserId($request->user()->id)->orderBy('created_at', 'desc')->get();
+        $webhookReceivers = WebhookReceiver::with(['bot', 'user'])->whereTeamId($request->user()->currentTeam->id)
+            ->whereUserId($request->user()->id)->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Webhook/Show', [
-            'webhookReceivers' => ResourcesWebhookReceiver::collection($items),
+            'webhookReceivers' => ResourcesWebhookReceiver::collection($webhookReceivers),
+        ]);
+    }
+
+    public function link(Request $request)
+    {
+        Validator::make($request->all(), [
+            'bot_token' => ['required', 'string'],
+        ])->validateWithBag('botLink');
+
+        try {
+            $r = new ReflectionMethod(Telegram::class, 'sendRequest');
+            $r->setAccessible(true);
+            $response =  $r->invoke(new Telegram($request->bot_token), "getMe", []);
+
+            $result = json_decode($response->getBody(), true)['result'];
+
+            $r->invoke(new Telegram($request->bot_token), "setWebhook", [
+                'url' => config('receiver.host') . '/api/webhook/telegram'
+            ]);
+
+            $bot = Bot::updateOrCreate([
+                'token' => $request->bot_token,
+            ], [
+                'name' => $result['first_name'],
+                'username' => $result['username'],
+                'meta' => $result,
+            ]);
+        } catch (\Throwable $th) {
+            throw ValidationException::withMessages(['bot_token' => 'Token 無效。' . $th->getMessage()])->errorBag('botLink');
+        }
+
+        $token = Str::random(32);
+        Cache::put(
+            $token,
+            auth()->user()->id . ' ' . auth()->user()->currentTeam->id . ' ' . $bot->id,
+            3600
+        );
+
+        return Inertia::render('Webhook/Wait', [
+            "url" => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
+            'token' => $token,
+        ]);
+    }
+
+    public function relink(Request $request)
+    {
+        Validator::make($request->all(), [
+            'id' => ['required'],
+        ])->validateWithBag('botLink');
+
+        $webhookReceiver = WebhookReceiver::with('bot')->find($request->id);
+
+        $token = $request->token ?: Str::random(32);
+        Cache::put(
+            $token,
+            auth()->user()->id . ' ' . auth()->user()->currentTeam->id . ' ' . $webhookReceiver->bot->id,
+            3600
+        );
+
+        return Inertia::render('Webhook/Wait', [
+            "url" => 'https://t.me/' . $webhookReceiver->bot->username . '?startgroup=' . $token,
+            'token' => $token,
         ]);
     }
 
     public function create(Request $request)
     {
-        return Inertia::render('Webhook/Create');
+        $bots = Bot::orderBy('created_at', 'desc')->get();
+
+        return Inertia::render('Webhook/Create', [
+            'bots' => $bots,
+        ]);
+    }
+
+    public function wait(Request $request)
+    {
+        return Inertia::render('Webhook/Wait');
     }
 
     public function edit(Request $request)

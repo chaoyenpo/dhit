@@ -1,17 +1,20 @@
 <template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
+  <jet-authentication-card>
+    <template #logo>
+      <jet-authentication-card-logo />
+    </template>
 
-        <jet-validation-errors class="mb-4" />
+    <jet-validation-errors class="mb-4" />
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+    <div
+      v-if="status"
+      class="mb-4 font-medium text-sm text-green-600"
+    >
+      {{ status }}
+    </div>
 
-        <form @submit.prevent="submit">
-            <div>
+    <form @submit.prevent="submit">
+      <!-- <div>
                 <jet-label for="email" value="Email" />
                 <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
             </div>
@@ -38,66 +41,66 @@
                 </jet-button>
             </div>
 
-            <hr class="mt-4">
+            <hr class="mt-4"> -->
 
-            <div class="flex justify-center mt-4">
-                <a
-                  class="inline-flex cursor-pointer items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest     hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
-                  :href="route('login.google')"
-                >
-                    透過 Google 登入
-                </a>
-            </div>
-        </form>
-    </jet-authentication-card>
+      <div class="flex justify-center">
+        <a
+          class="inline-flex cursor-pointer items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
+          :href="route('login.google')"
+        >
+          透過 Google 登入
+        </a>
+      </div>
+    </form>
+  </jet-authentication-card>
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetCheckbox from '@/Jetstream/Checkbox'
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import JetAuthenticationCard from "@/Jetstream/AuthenticationCard";
+import JetAuthenticationCardLogo from "@/Jetstream/AuthenticationCardLogo";
+import JetButton from "@/Jetstream/Button";
+import JetInput from "@/Jetstream/Input";
+import JetCheckbox from "@/Jetstream/Checkbox";
+import JetLabel from "@/Jetstream/Label";
+import JetValidationErrors from "@/Jetstream/ValidationErrors";
 
-    export default {
-        components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetCheckbox,
-            JetLabel,
-            JetValidationErrors
-        },
+export default {
+  components: {
+    JetAuthenticationCard,
+    JetAuthenticationCardLogo,
+    JetButton,
+    JetInput,
+    JetCheckbox,
+    JetLabel,
+    JetValidationErrors,
+  },
 
-        props: {
-            canResetPassword: Boolean,
-            status: String
-        },
+  props: {
+    canResetPassword: Boolean,
+    status: String,
+  },
 
-        data() {
-            return {
-                form: this.$inertia.form({
-                    email: '',
-                    password: '',
-                    remember: false
-                })
-            }
-        },
+  data() {
+    return {
+      form: this.$inertia.form({
+        email: "",
+        password: "",
+        remember: false,
+      }),
+    };
+  },
 
-        methods: {
-            submit() {
-                this.form
-                    .transform(data => ({
-                        ... data,
-                        remember: this.form.remember ? 'on' : ''
-                    }))
-                    .post(this.route('login'), {
-                        onFinish: () => this.form.reset('password'),
-                    })
-            }
-        }
-    }
+  methods: {
+    submit() {
+      this.form
+        .transform((data) => ({
+          ...data,
+          remember: this.form.remember ? "on" : "",
+        }))
+        .post(this.route("login"), {
+          onFinish: () => this.form.reset("password"),
+        });
+    },
+  },
+};
 </script>

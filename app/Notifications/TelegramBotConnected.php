@@ -13,14 +13,16 @@ class TelegramBotConnected extends Notification
 {
     use Queueable;
 
+    private $token;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
@@ -39,7 +41,7 @@ class TelegramBotConnected extends Notification
         return TelegramMessage::create()
             ->content(implode(PHP_EOL,[
                 '連結成功 ❤️' . PHP_EOL,
-            ]));
+            ]))->token($this->token);
     }
 
     /**

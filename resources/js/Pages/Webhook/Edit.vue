@@ -65,7 +65,7 @@
               <div class="mt-5">
                 <jet-button
                   type="button"
-                  :disabled="true"
+                  @click="reconnectWebhookReceiver"
                 >
                   重新連結到其他群組
                 </jet-button>
@@ -75,33 +75,23 @@
 
           <jet-section-border />
 
-          <jet-form-section>
+          <jet-action-section>
             <template #title>
-              機器人名稱
+              Bot 資訊
             </template>
 
-            <template #description>
-
+            <template #content>
+              {{$page.props.webhookReceiver.bot.name}}
+              <br>
+              <a
+                class="font-medium text-gray-800 hover:text-gray-700"
+                target="_blank"
+                :href="`https://t.me/${$page.props.webhookReceiver.bot.username}`"
+              >
+              @{{$page.props.webhookReceiver.bot.username}}
+              </a>
             </template>
-
-            <template #form>
-              <div class="col-span-6 sm:col-span-4">
-                <jet-input
-                  id="name"
-                  type="text"
-                  class="mt-1 block w-full"
-                  value="Siri"
-                  :disabled="true"
-                />
-              </div>
-            </template>
-
-            <template #actions>
-              <jet-button :disabled="true">
-                儲存修改
-              </jet-button>
-            </template>
-          </jet-form-section>
+          </jet-action-section>
 
           <jet-section-border />
 
@@ -127,8 +117,6 @@ import JetFormSection from "@/Jetstream/FormSection";
 import UpdateMessageFormatForm from "./UpdateMessageFormatForm";
 import DeleteWebhookReceiverForm from "./DeleteWebhookReceiverForm";
 
-const hostname = window.location.hostname;
-
 export default {
   components: {
     AppLayout,
@@ -141,6 +129,11 @@ export default {
     UpdateMessageFormatForm,
     DeleteWebhookReceiverForm,
   },
+
+  props: {
+    webhookReceiver: Object,
+  },
+
   setup() {
     const copyLabel = ref("複製");
 
@@ -150,10 +143,27 @@ export default {
     };
 
     return {
-      hostname,
       copyLabel,
       onSuccess,
     };
+  },
+
+  data() {
+    return {
+      processing: false,
+    };
+  },
+
+  methods: {
+    reconnectWebhookReceiver() {
+      this.$inertia.post(
+        route("webhooks.relink"),
+        { id: this.webhookReceiver.id },
+        {
+          errorBag: "botLink",
+        }
+      );
+    },
   },
 };
 </script>

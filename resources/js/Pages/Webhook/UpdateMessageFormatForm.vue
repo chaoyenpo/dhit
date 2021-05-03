@@ -19,7 +19,7 @@
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
       >
-        儲存設定
+        儲存
       </jet-button>
     </template>
   </jet-form-section>
