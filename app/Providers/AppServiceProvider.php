@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (App::environment('production')) {
             app('request')->server->set('HTTPS', true);
-          }
+        }
     }
 
     /**
