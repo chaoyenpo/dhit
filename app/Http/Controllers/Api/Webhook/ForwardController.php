@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api\Webhook;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\WebhookReceiver;
+use App\Http\Controllers\Controller;
 use App\Notifications\WebhookForward;
 use Illuminate\Support\Facades\Notification;
 
@@ -20,9 +21,20 @@ class ForwardController extends Controller
             ]);
         }
 
+        $dql = Arr::dot((array) $webhookReceiver->dql);
+
+        if ($dql) {
+            $result = [];
+            foreach ($dql as $key => $value) {
+                Arr::set($result, $key, data_get($request->all(), $key));
+            }
+        } else {
+            $result = $request->all();
+        }
+
         try {
             Notification::route('telegram', data_get($webhookReceiver, 'chat.id'))
-                ->notify(new WebhookForward($request, $webhookReceiver));
+                ->notify(new WebhookForward($result, $webhookReceiver));
 
             if ($webhookReceiver->malfunction) {
                 $webhookReceiver->malfunction = null;

@@ -96,7 +96,7 @@ export default {
 
   methods: {
     createWebhookReceiver() {
-      this.form.post(route("webhooks"), {
+      this.form.post(route("webhooks.store"), {
         errorBag: "botLink",
       });
     },

@@ -1,20 +1,50 @@
 <template>
-  <jet-form-section @submitted="updateTeamName">
+  <jet-form-section @submitted="updateWebhookReceiverDql">
     <template #title>
       訊息格式設定
     </template>
 
     <template #description>
       可以格式化要發送的訊息。
+      <br>
+      <br>
+      <pre class="text-md bg-white p-4">
+// 若填入以下內容：
+{
+    "user": {
+        "name": {}
+    }
+}
+
+// input:
+{
+    "user": {
+        "name": "fish",
+        "age": 27
+    }
+}
+
+// output:
+{
+    "user": {
+        "name": "fish"
+    }
+}</pre>
+      <br>
+      <pre class="text-md bg-white p-4">
+// 如果要全部內容轉送請填入空的大括號即可：
+{}</pre>
     </template>
 
     <template #form>
-      <div class="col-span-6 h-72">
-        <json-editor v-model="code"></json-editor>
+      <div class="col-span-6 h-80">
+        <json-editor v-model="form.dql"></json-editor>
       </div>
     </template>
 
     <template #actions>
+      <jet-input-error :message="form.errors.dql" />
+
       <jet-button
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
@@ -26,7 +56,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import JetActionMessage from "@/Jetstream/ActionMessage";
 import JetButton from "@/Jetstream/Button";
 import JetFormSection from "@/Jetstream/FormSection";
@@ -46,31 +75,22 @@ export default {
     JsonEditor,
   },
 
-  props: ["team", "permissions"],
-
-  setup() {
-    const code = ref("");
-
-    return {
-      code,
-    };
-  },
+  props: ["webhookReceiver"],
 
   data() {
     return {
       form: this.$inertia.form({
-        name: "",
+        dql: this.webhookReceiver.dql,
       }),
     };
   },
 
   methods: {
-    updateTeamName() {
-      console.log(this.code);
-      //   this.form.put(route("teams.update", this.team), {
-      //     errorBag: "updateTeamName",
-      //     preserveScroll: true,
-      //   });
+    updateWebhookReceiverDql() {
+      this.form.put(route("webhooks.update", this.webhookReceiver), {
+        errorBag: "updateWebhookReceiver",
+        preserveScroll: true,
+      });
     },
   },
 };

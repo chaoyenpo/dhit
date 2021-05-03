@@ -46,7 +46,7 @@
 
           <jet-section-border />
 
-          <update-message-format-form />
+          <update-message-format-form :webhookReceiver="$page.props.webhookReceiver" />
 
           <jet-section-border />
 
@@ -88,7 +88,7 @@
                 target="_blank"
                 :href="`https://t.me/${$page.props.webhookReceiver.bot.username}`"
               >
-              @{{$page.props.webhookReceiver.bot.username}}
+                @{{$page.props.webhookReceiver.bot.username}}
               </a>
             </template>
           </jet-action-section>

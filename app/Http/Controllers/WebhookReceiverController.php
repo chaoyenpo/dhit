@@ -116,6 +116,25 @@ class WebhookReceiverController extends Controller
         ]);
     }
 
+    public function update(Request $request, $webhookReceiverId)
+    {
+        $webhookReceiver = WebhookReceiver::findOrFail($webhookReceiverId);
+
+        Validator::make($request->all(), [
+            'dql' => ['required', 'string'],
+        ])->validateWithBag('updateWebhookReceiver');
+
+        try {
+            $webhookReceiver->forceFill([
+                'dql' => json_decode($request->dql),
+            ])->save();
+        } catch (\Throwable $th) {
+            throw ValidationException::withMessages(['dql' => 'JSON 格式解析失敗，請確認格式是否正確。'])->errorBag('updateWebhookReceiver');
+        }
+
+        return back(303);
+    }
+
     public function destroy(Request $request, $webhookReceiverId)
     {
         $webhookReceiver = WebhookReceiver::findOrFail($webhookReceiverId);

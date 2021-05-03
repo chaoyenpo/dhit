@@ -14,6 +14,7 @@ class WebhookReceiver extends Model
 
     protected $casts = [
         'chat' => 'array',
+        'dql' => 'object',
     ];
 
     public function user()

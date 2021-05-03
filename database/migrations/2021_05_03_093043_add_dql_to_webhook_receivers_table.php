@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddMalfunctionToWebhookReceiversTable extends Migration
+class AddDqlToWebhookReceiversTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +15,7 @@ class AddMalfunctionToWebhookReceiversTable extends Migration
     public function up()
     {
         Schema::table('webhook_receivers', function (Blueprint $table) {
-            $table->string('malfunction')->nullable()->after('chat');
+            $table->json('dql')->default(new Expression('(JSON_OBJECT())'))->after('chat');
         });
     }
 
@@ -26,7 +27,7 @@ class AddMalfunctionToWebhookReceiversTable extends Migration
     public function down()
     {
         Schema::table('webhook_receivers', function (Blueprint $table) {
-            $table->dropColumn('malfunction');
+            $table->dropColumn('dql');
         });
     }
 }
