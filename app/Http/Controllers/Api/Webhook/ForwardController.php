@@ -21,7 +21,7 @@ class ForwardController extends Controller
             ]);
         }
 
-        $dql = Arr::dot((array) $webhookReceiver->dql);
+        $dql = Arr::dot(json_decode(json_encode($webhookReceiver->dql), true));
 
         if ($dql) {
             $result = [];
