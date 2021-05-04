@@ -60,10 +60,7 @@
     </template>
 
     <template #actions>
-      <jet-button
-        :class="{ 'opacity-25': form.processing }"
-        :disabled="form.processing"
-      >
+      <jet-button>
         連接 Bot 到聊天室中
       </jet-button>
     </template>

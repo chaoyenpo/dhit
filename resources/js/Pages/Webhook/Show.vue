@@ -15,11 +15,7 @@
               :href="route('webhooks.create')"
               :active="route().current('webhooks.create')"
             >
-              <jet-button
-                type="button"
-                :class="{ 'opacity-25': enabling }"
-                :disabled="enabling"
-              >
+              <jet-button type="button">
                 建立 Webhook 接收器
               </jet-button>
             </inertia-link>
