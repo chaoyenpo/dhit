@@ -27,9 +27,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::get('/webhooks', [WebhookReceiverController::class, 'show'])->name('webhooks');
     Route::get('/webhooks/create', [WebhookReceiverController::class, 'create'])->name('webhooks.create');
+    Route::post('/webhooks', [WebhookReceiverController::class, 'store'])->name('webhooks.store');
     Route::get('/webhooks/edit', [WebhookReceiverController::class, 'edit'])->name('webhooks.edit');
-    Route::get('/webhooks/wait', [WebhookReceiverController::class, 'wait'])->name('webhooks.wait');
-    Route::post('/webhooks', [WebhookReceiverController::class, 'link'])->name('webhooks.store');
     Route::put('/webhooks/{webhookReceiver}', [WebhookReceiverController::class, 'update'])->name('webhooks.update');
     Route::post('/webhooks/relink', [WebhookReceiverController::class, 'relink'])->name('webhooks.relink');
     Route::delete('/webhooks/{webhookReceiver}', [WebhookReceiverController::class, 'destroy'])->name('webhooks.destroy');

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\WebhookReceiver;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Jetstream\RedirectsActions;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
 use Illuminate\Validation\ValidationException;
@@ -29,7 +30,12 @@ class WebhookReceiverController extends Controller
         ]);
     }
 
-    public function link(Request $request)
+    public function create(Request $request)
+    {
+        return Inertia::render('Webhook/Create');
+    }
+
+    public function store(Request $request)
     {
         Validator::make($request->all(), [
             'bot_token' => ['required', 'string'],
@@ -64,9 +70,9 @@ class WebhookReceiverController extends Controller
             3600
         );
 
-        return Inertia::render('Webhook/Wait', [
-            "url" => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
-            'token' => $token,
+        return back()->with([
+            'url' => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
+            'token' => $token
         ]);
     }
 
@@ -84,24 +90,10 @@ class WebhookReceiverController extends Controller
             3600
         );
 
-        return Inertia::render('Webhook/Wait', [
+        return back()->with([
             "url" => 'https://t.me/' . $webhookReceiver->bot->username . '?startgroup=' . $webhookReceiver->token,
             'token' => $webhookReceiver->token,
         ]);
-    }
-
-    public function create(Request $request)
-    {
-        $bots = Bot::orderBy('created_at', 'desc')->get();
-
-        return Inertia::render('Webhook/Create', [
-            'bots' => $bots,
-        ]);
-    }
-
-    public function wait(Request $request)
-    {
-        return Inertia::render('Webhook/Wait');
     }
 
     public function edit(Request $request)

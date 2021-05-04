@@ -21,13 +21,7 @@ const dom = ref();
 let instance;
 
 onMounted(() => {
-  const modelUri = monaco.Uri.parse("json://grid/settings.json");
-
-  const jsonModel = monaco.editor.createModel(
-    JSON.stringify(props.modelValue, null, "\t"),
-    "json",
-    modelUri
-  );
+  const jsonModel = monaco.editor.createModel(props.modelValue, "json");
 
   instance = monaco.editor.create(dom.value, {
     model: jsonModel,

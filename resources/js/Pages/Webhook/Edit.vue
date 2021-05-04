@@ -160,7 +160,26 @@ export default {
         route("webhooks.relink"),
         { id: this.webhookReceiver.id },
         {
+          preserveScroll: true,
+          onSuccess: this.link,
           errorBag: "botLink",
+        }
+      );
+    },
+
+    link() {
+      const tgWindow = window.open();
+
+      tgWindow.location.href = this.$page.props.flash.url;
+
+      Echo.private(`webhook.receiver.${this.$page.props.flash.token}`).listen(
+        "TelegramConnected",
+        (e) => {
+          tgWindow.close();
+
+          this.$inertia.get(route("webhooks.edit"), {
+            id: e.id,
+          });
         }
       );
     },

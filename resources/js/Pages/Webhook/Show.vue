@@ -72,8 +72,6 @@
                           <jet-button
                             type="button"
                             class="ml-4"
-                            :class="{ 'opacity-25': enabling }"
-                            :disabled="enabling"
                           >
                             編輯
                           </jet-button>

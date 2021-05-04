@@ -45,6 +45,13 @@
     <template #actions>
       <jet-input-error :message="form.errors.dql" />
 
+      <jet-action-message
+        :on="form.recentlySuccessful"
+        class="mr-3"
+      >
+        成功儲存。
+      </jet-action-message>
+
       <jet-button
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
@@ -80,7 +87,7 @@ export default {
   data() {
     return {
       form: this.$inertia.form({
-        dql: this.webhookReceiver.dql,
+        dql: JSON.stringify(this.webhookReceiver.dql, null, "\t"),
       }),
     };
   },

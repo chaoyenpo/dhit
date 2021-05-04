@@ -60,7 +60,7 @@
     </template>
 
     <template #actions>
-      <jet-button>
+      <jet-button :disabled="processing">
         連接 Bot 到聊天室中
       </jet-button>
     </template>
@@ -88,6 +88,7 @@ export default {
       form: this.$inertia.form({
         bot_token: "",
       }),
+      processing: false,
     };
   },
 
@@ -95,7 +96,27 @@ export default {
     createWebhookReceiver() {
       this.form.post(route("webhooks.store"), {
         errorBag: "botLink",
+        preserveScroll: true,
+        onStart: () => (this.processing = true),
+        onSuccess: this.link,
       });
+    },
+
+    link() {
+      const tgWindow = window.open();
+
+      tgWindow.location.href = this.$page.props.flash.url;
+
+      Echo.private(`webhook.receiver.${this.$page.props.flash.token}`).listen(
+        "TelegramConnected",
+        (e) => {
+          tgWindow.close();
+
+          this.$inertia.get(route("webhooks.edit"), {
+            id: e.id,
+          });
+        }
+      );
     },
   },
 };
