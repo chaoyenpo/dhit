@@ -22,7 +22,7 @@ class WebhookReceiver extends JsonResource
             'uri' => config('receiver.host') . '/api/webhookReceiver/' . $this->token,
             'malfunction' => $this->malfunction,
             'bot' => $this->bot,
-            'dql' => json_encode($this->dql, JSON_PRETTY_PRINT),
+            'dql' => $this->dql,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

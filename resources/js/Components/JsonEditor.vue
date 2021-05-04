@@ -2,7 +2,8 @@
   <div
     class="editor"
     ref="dom"
-  ></div>
+  >
+  </div>
 </template>
 
 <script setup>
@@ -20,7 +21,13 @@ const dom = ref();
 let instance;
 
 onMounted(() => {
-  const jsonModel = monaco.editor.createModel(props.modelValue, "json");
+  const modelUri = monaco.Uri.parse("json://grid/settings.json");
+
+  const jsonModel = monaco.editor.createModel(
+    JSON.stringify(props.modelValue, null, "\t"),
+    "json",
+    modelUri
+  );
 
   instance = monaco.editor.create(dom.value, {
     model: jsonModel,
@@ -33,6 +40,7 @@ onMounted(() => {
   instance.onDidChangeModelContent(() => {
     const value = instance.getValue();
     emit("update:modelValue", value);
+    instance.getAction("editor.action.formatDocument").run();
   });
 });
 </script>
