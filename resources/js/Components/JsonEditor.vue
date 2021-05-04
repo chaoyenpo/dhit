@@ -40,7 +40,6 @@ onMounted(() => {
   instance.onDidChangeModelContent(() => {
     const value = instance.getValue();
     emit("update:modelValue", value);
-    instance.getAction("editor.action.formatDocument").run();
   });
 });
 </script>
