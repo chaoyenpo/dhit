@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\WebhookReceiver;
 use App\Events\TelegramConnected;

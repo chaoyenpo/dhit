@@ -78,16 +78,15 @@ class WebhookReceiverController extends Controller
 
         $webhookReceiver = WebhookReceiver::with('bot')->find($request->id);
 
-        $token = $request->token ?: Str::random(32);
         Cache::put(
-            $token,
+            $webhookReceiver->token,
             auth()->user()->id . ' ' . auth()->user()->currentTeam->id . ' ' . $webhookReceiver->bot->id,
             3600
         );
 
         return Inertia::render('Webhook/Wait', [
-            "url" => 'https://t.me/' . $webhookReceiver->bot->username . '?startgroup=' . $token,
-            'token' => $token,
+            "url" => 'https://t.me/' . $webhookReceiver->bot->username . '?startgroup=' . $webhookReceiver->token,
+            'token' => $webhookReceiver->token,
         ]);
     }
 
@@ -138,8 +137,6 @@ class WebhookReceiverController extends Controller
     public function destroy(Request $request, $webhookReceiverId)
     {
         $webhookReceiver = WebhookReceiver::findOrFail($webhookReceiverId);
-
-        // app(ValidateTeamDeletion::class)->validate($request->user(), $team);
 
         $webhookReceiver->delete();
 
