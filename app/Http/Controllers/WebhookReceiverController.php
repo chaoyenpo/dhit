@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use App\Models\WebhookReceiver;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Jetstream\RedirectsActions;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
 use Illuminate\Validation\ValidationException;
