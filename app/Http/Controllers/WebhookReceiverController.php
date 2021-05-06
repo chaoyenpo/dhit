@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bot;
-use Inertia\Inertia;
-use ReflectionMethod;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\WebhookReceiver;
-use Illuminate\Support\Facades\Cache;
-use Laravel\Jetstream\RedirectsActions;
-use Illuminate\Support\Facades\Validator;
-use NotificationChannels\Telegram\Telegram;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\WebhookReceiver as ResourcesWebhookReceiver;
+use App\Models\Bot;
+use App\Models\WebhookReceiver;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
+use Laravel\Jetstream\RedirectsActions;
+use NotificationChannels\Telegram\Telegram;
+use ReflectionMethod;
 
 class WebhookReceiverController extends Controller
 {
@@ -43,12 +43,12 @@ class WebhookReceiverController extends Controller
         try {
             $r = new ReflectionMethod(Telegram::class, 'sendRequest');
             $r->setAccessible(true);
-            $response =  $r->invoke(new Telegram($request->bot_token), "getMe", []);
+            $response = $r->invoke(new Telegram($request->bot_token), "getMe", []);
 
-            $result = json_decode($response->getBody(), true)['result'];
+            $result = (json_decode($response->getBody(), true) ?? [])['result'];
 
             $r->invoke(new Telegram($request->bot_token), "setWebhook", [
-                'url' => config('receiver.host') . '/api/webhook/telegram'
+                'url' => config('receiver.host') . '/api/webhook/telegram',
             ]);
 
             $bot = Bot::updateOrCreate([
@@ -71,7 +71,7 @@ class WebhookReceiverController extends Controller
 
         return back()->with([
             'url' => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
-            'token' => $token
+            'token' => $token,
         ]);
     }
 

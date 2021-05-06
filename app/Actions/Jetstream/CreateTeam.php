@@ -2,6 +2,7 @@
 
 namespace App\Actions\Jetstream;
 
+use App\Notifications\WebhookForward;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Contracts\CreatesTeams;

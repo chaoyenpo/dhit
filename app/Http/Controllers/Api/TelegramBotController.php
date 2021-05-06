@@ -33,8 +33,8 @@ class TelegramBotController extends Controller
         $webhookReceiver = WebhookReceiver::updateOrCreate([
             'token' => $token,
         ], [
-            'team_id'=> $teamId,
-            'user_id'=> $userId,
+            'team_id' => $teamId,
+            'user_id' => $userId,
             'bot_id' => $botId,
             'chat' => data_get($request, 'message.chat'),
         ]);

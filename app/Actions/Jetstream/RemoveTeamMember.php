@@ -5,8 +5,8 @@ namespace App\Actions\Jetstream;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
-use Laravel\Jetstream\Contracts\RemovesTeamMembers;
 use Laravel\Jetstream\Events\TeamMemberRemoved;
+use Laravel\Jetstream\Contracts\RemovesTeamMembers;
 
 class RemoveTeamMember implements RemovesTeamMembers
 {
@@ -37,7 +37,7 @@ class RemoveTeamMember implements RemovesTeamMembers
      * @param  mixed  $teamMember
      * @return void
      */
-    protected function authorize($user, $team, $teamMember)
+    protected function authoriez($user, $team, $teamMember)
     {
         if (! Gate::forUser($user)->check('removeTeamMember', $team) &&
             $user->id !== $teamMember->id) {
