@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Webhook;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\WebhookReceiver;
 use App\Http\Controllers\Controller;
@@ -13,7 +14,7 @@ class ForwardController extends Controller
 {
     public function receive(Request $request, $token)
     {
-        if (! $webhookReceiver = WebhookReceiver::whereToken($token)->first()) {
+        if (!$webhookReceiver = WebhookReceiver::whereToken($token)->first()) {
             return response()->json([
                 'ok' => true,
                 'result' => false,
@@ -26,11 +27,24 @@ class ForwardController extends Controller
         if ($dql) {
             $result = [];
             foreach ($dql as $key => $value) {
-                Arr::set($result, $key, data_get($request->all(), $key));
+                // 判斷抓到第一個 .0. 代表後面是陣列，所以要抓取
+                if (Str::contains($key, '.0.')) {
+                    $dataKey = Str::before($key, '.0.');
+                    $needDataKey = Str::after($key, '.0.');
+                    $arrayData = data_get($request->all(), $dataKey);
+
+                    foreach ($arrayData as $arrayDataKey => $arrayDataValue) {
+                        Arr::set($result, $dataKey . '.' . $arrayDataKey . '.' . $needDataKey, data_get($arrayDataValue, $needDataKey));
+                    }
+                } else {
+                    Arr::set($result, $key, data_get($request->all(), $key));
+                }
             }
         } else {
             $result = $request->all();
         }
+
+        return $result;
 
         try {
             Notification::route('telegram', data_get($webhookReceiver, 'chat.id'))
