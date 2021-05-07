@@ -44,8 +44,6 @@ class ForwardController extends Controller
             $result = $request->all();
         }
 
-        return $result;
-
         try {
             Notification::route('telegram', data_get($webhookReceiver, 'chat.id'))
                 ->notify(new WebhookForward($result, $webhookReceiver));
