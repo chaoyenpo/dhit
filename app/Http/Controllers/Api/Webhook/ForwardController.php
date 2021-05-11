@@ -49,6 +49,7 @@ class ForwardController extends Controller
             storage_path('jmte.jar'),
             stream_get_meta_data($template)['uri'],
             stream_get_meta_data($properties)['uri'],
+            'UTF-8'
         ]);
         $process->run();
         $result = $process->getOutput();
