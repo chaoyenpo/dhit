@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Api\Webhook;
 
-use SimpleXMLElement;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\WebhookReceiver;
 use App\Http\Controllers\Controller;
@@ -40,7 +37,9 @@ class ForwardController extends Controller
         }
 
         $properties = tmpfile();
-        fwrite($properties, yaml_emit($request->all()));
+        if (function_exists('yaml_emit')) {
+            fwrite($properties, yaml_emit($request->all()));
+        }
 
         $template = tmpfile();
         fwrite($template, $webhookReceiver->jmte);
