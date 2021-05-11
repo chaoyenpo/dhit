@@ -1,54 +1,19 @@
 <template>
   <jet-form-section @submitted="updateWebhookReceiverDql">
-    <template #title>
-      訊息格式設定
-    </template>
+    <template #title> 訊息模板設定 </template>
 
-    <template #description>
-      可以格式化要發送的訊息。
-      <br>
-      <br>
-      <pre class="text-md bg-white p-4">
-// 若填入以下內容：
-{
-    "user": {
-        "name": {}
-    }
-}
-
-// input:
-{
-    "user": {
-        "name": "fish",
-        "age": 27
-    }
-}
-
-// output:
-{
-    "user": {
-        "name": "fish"
-    }
-}</pre>
-      <br>
-      <pre class="text-md bg-white p-4">
-// 如果要全部內容轉送請填入空的大括號即可：
-{}</pre>
-    </template>
+    <template #description> JMTE templates。</template>
 
     <template #form>
       <div class="col-span-6 h-80">
-        <json-editor v-model="form.dql"></json-editor>
+        <text-editor v-model="form.jmte"></text-editor>
       </div>
     </template>
 
     <template #actions>
-      <jet-input-error :message="form.errors.dql" />
+      <jet-input-error :message="form.errors.jmte" />
 
-      <jet-action-message
-        :on="form.recentlySuccessful"
-        class="mr-3"
-      >
+      <jet-action-message :on="form.recentlySuccessful" class="mr-3">
         成功儲存。
       </jet-action-message>
 
@@ -69,7 +34,7 @@ import JetFormSection from "@/Jetstream/FormSection";
 import JetInput from "@/Jetstream/Input";
 import JetInputError from "@/Jetstream/InputError";
 import JetLabel from "@/Jetstream/Label";
-import JsonEditor from "@/Components/JsonEditor";
+import TextEditor from "@/Components/TextEditor";
 
 export default {
   components: {
@@ -79,7 +44,7 @@ export default {
     JetInput,
     JetInputError,
     JetLabel,
-    JsonEditor,
+    TextEditor,
   },
 
   props: ["webhookReceiver"],
@@ -87,7 +52,7 @@ export default {
   data() {
     return {
       form: this.$inertia.form({
-        dql: JSON.stringify(this.webhookReceiver.dql, null, "\t"),
+        jmte: this.webhookReceiver.jmte,
       }),
     };
   },

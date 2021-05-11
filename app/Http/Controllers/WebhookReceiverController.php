@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\WebhookReceiver as ResourcesWebhookReceiver;
 use App\Models\Bot;
-use App\Models\WebhookReceiver;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
-use Laravel\Jetstream\RedirectsActions;
-use NotificationChannels\Telegram\Telegram;
 use ReflectionMethod;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\WebhookReceiver;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Laravel\Jetstream\RedirectsActions;
+use Illuminate\Support\Facades\Validator;
+use NotificationChannels\Telegram\Telegram;
+use Illuminate\Validation\ValidationException;
+use App\Http\Resources\WebhookReceiver as ResourcesWebhookReceiver;
 
 class WebhookReceiverController extends Controller
 {
@@ -111,15 +112,18 @@ class WebhookReceiverController extends Controller
         $webhookReceiver = WebhookReceiver::findOrFail($webhookReceiverId);
 
         Validator::make($request->all(), [
-            'dql' => ['required', 'string'],
+            'jmte' => ['string'],
         ])->validateWithBag('updateWebhookReceiver');
 
         try {
             $webhookReceiver->forceFill([
-                'dql' => json_decode($request->dql),
+                'jmte' => $request->jmte,
             ])->save();
         } catch (\Throwable $th) {
-            throw ValidationException::withMessages(['dql' => 'JSON 格式解析失敗，請確認格式是否正確。'])->errorBag('updateWebhookReceiver');
+            throw $th;
+            throw ValidationException::withMessages([
+                'jmte' => '儲存失敗。',
+            ])->errorBag('updateWebhookReceiver');
         }
 
         return back(303);

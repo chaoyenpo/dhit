@@ -2,16 +2,33 @@
 
 namespace App\Http\Controllers\Api\Webhook;
 
+use SimpleXMLElement;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\WebhookReceiver;
 use App\Http\Controllers\Controller;
 use App\Notifications\WebhookForward;
+use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Notification;
 
 class ForwardController extends Controller
 {
+    private function array_to_xml($data, &$xml_data)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                if (is_numeric($key)) {
+                    $key = 'item' . $key; //dealing with <0/>..<n/> issues
+                }
+                $subnode = $xml_data->addChild($key);
+                self::array_to_xml($value, $subnode);
+            } else {
+                $xml_data->addChild("$key", htmlspecialchars("$value"));
+            }
+        }
+    }
+
     public function receive(Request $request, $token)
     {
         if (!$webhookReceiver = WebhookReceiver::whereToken($token)->first()) {
@@ -22,32 +39,28 @@ class ForwardController extends Controller
             ]);
         }
 
-        $dql = Arr::dot(json_decode(json_encode($webhookReceiver->dql), true));
+        $properties = tmpfile();
+        fwrite($properties, yaml_emit($request->all()));
 
-        if ($dql) {
-            $result = [];
-            foreach ($dql as $key => $value) {
-                // 判斷抓到第一個 .0. 代表後面是陣列，所以要抓取
-                if (Str::contains($key, '.0.')) {
-                    $dataKey = Str::before($key, '.0.');
-                    $needDataKey = Str::after($key, '.0.');
-                    $arrayData = data_get($request->all(), $dataKey);
+        $template = tmpfile();
+        fwrite($template, $webhookReceiver->jmte);
 
-                    foreach ($arrayData as $arrayDataKey => $arrayDataValue) {
-                        Arr::set($result, $dataKey . '.' . $arrayDataKey . '.' . $needDataKey, data_get($arrayDataValue, $needDataKey));
-                    }
-                } else {
-                    Arr::set($result, $key, data_get($request->all(), $key));
-                }
-            }
-        } else {
-            $result = $request->all();
-        }
+        $process = new Process([
+            'java',
+            '-jar',
+            storage_path('jmte.jar'),
+            stream_get_meta_data($template)['uri'],
+            stream_get_meta_data($properties)['uri'],
+        ]);
+        $process->run();
+        $result = $process->getOutput();
+
+        fclose($template);
+        fclose($properties);
 
         try {
             Notification::route('telegram', data_get($webhookReceiver, 'chat.id'))
                 ->notify(new WebhookForward($result, $webhookReceiver));
-
             if ($webhookReceiver->malfunction) {
                 $webhookReceiver->malfunction = null;
                 $webhookReceiver->save();

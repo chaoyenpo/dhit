@@ -23,6 +23,7 @@ class WebhookReceiver extends JsonResource
             'malfunction' => $this->malfunction,
             'bot' => $this->bot,
             'dql' => $this->dql,
+            'jmte' => $this->jmte,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }
