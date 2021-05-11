@@ -44,6 +44,7 @@ class ForwardController extends Controller
 
         $process = new Process([
             'java',
+            '-Dfile.encoding=UTF8',
             '-jar',
             storage_path('jmte.jar'),
             stream_get_meta_data($template)['uri'],
