@@ -37,9 +37,7 @@ class ForwardController extends Controller
         }
 
         $properties = tmpfile();
-        if (function_exists('yaml_emit')) {
-            fwrite($properties, yaml_emit($request->all()));
-        }
+        fwrite($properties, yaml_emit($request->all()));
 
         $template = tmpfile();
         fwrite($template, $webhookReceiver->jmte);
