@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Throwable;
 use App\Models\Bot;
+use App\Models\BotNotify;
 use Inertia\Inertia;
 use ReflectionMethod;
 use App\Models\Domain;
@@ -20,9 +21,11 @@ class DomainValidController extends Controller
     public function show(Request $request)
     {
         $domains = Domain::whereTeamId($request->user()->currentTeam->id)->get();
+        $bot = BotNotify::whereTeamId($request->user()->currentTeam->id)->first();
 
         return Inertia::render('Domain/Show', [
             'domains' => $domains,
+            'bot' => $bot,
         ]);
     }
 

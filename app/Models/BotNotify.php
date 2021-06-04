@@ -12,6 +12,10 @@ class BotNotify extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'chat' => 'array',
+    ];
+
     public function bot()
     {
         return $this->belongsTo(Bot::class);

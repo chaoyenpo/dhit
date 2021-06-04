@@ -16,7 +16,7 @@
           </template>
 
           <template #content>
-            123133
+            {{ $page.props.bot?.chat?.title || "您尚未連接到任何群組！" }}
 
             <div class="mt-5">
               <jet-button type="button" @click="connectTelegramGroup">
@@ -110,7 +110,6 @@
 </template>
 
 <script>
-import { useForm } from "@inertiajs/inertia-vue3";
 import AppLayout from "@/Layouts/AppLayout";
 import JetButton from "@/Jetstream/Button";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
@@ -155,7 +154,7 @@ export default {
         (e) => {
           tgWindow.close();
 
-          //   this.$inertia.get(route("domains"));
+          this.$inertia.get(route("domains"));
         }
       );
     },
