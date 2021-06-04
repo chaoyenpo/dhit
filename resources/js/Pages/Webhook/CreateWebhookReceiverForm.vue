@@ -1,8 +1,6 @@
 <template>
   <jet-form-section @submitted="createWebhookReceiver">
-    <template #title>
-      Webhook 接收器細節
-    </template>
+    <template #title> Webhook 接收器細節 </template>
 
     <template #description>
       Webhook 接收器是一種可以將來自外部的消息發布到通訊軟體的一種方法。
@@ -20,15 +18,12 @@
             class="focus:ring-gray-500 h-4 w-4 text-gray-600 border-gray-300"
             checked
           />
-          <label
-            for="channel"
-            class="flex items-center ml-3"
-          >
+          <label for="channel" class="flex items-center ml-3">
             <img
               class="w-12 h-12 rounded-full object-cover"
               src="https://upload.wikimedia.org/wikipedia/commons/8/83/Telegram_2019_Logo.svg"
               alt="Telegram Logo"
-            >
+            />
 
             <div class="ml-4 leading-tight">
               <div>Telegram</div>
@@ -38,11 +33,7 @@
       </div>
 
       <div class="col-span-6 sm:col-span-4">
-
-        <jet-label
-          for="bot_token"
-          value="Bot Token"
-        />
+        <jet-label for="bot_token" value="Bot Token" />
 
         <jet-input
           id="bot_token"
@@ -51,18 +42,12 @@
           v-model="form.bot_token"
         />
 
-        <jet-input-error
-          :message="form.errors.bot_token"
-          class="mt-2"
-        />
-
+        <jet-input-error :message="form.errors.bot_token" class="mt-2" />
       </div>
     </template>
 
     <template #actions>
-      <jet-button :disabled="processing">
-        連接 Bot 到聊天室中
-      </jet-button>
+      <jet-button :disabled="processing"> 連接 Bot 到聊天室中 </jet-button>
     </template>
   </jet-form-section>
 </template>
@@ -110,6 +95,7 @@ export default {
       Echo.private(`webhook.receiver.${this.$page.props.flash.token}`).listen(
         "TelegramConnected",
         (e) => {
+          console.log(123123);
           tgWindow.close();
 
           this.$inertia.get(route("webhooks.edit"), {

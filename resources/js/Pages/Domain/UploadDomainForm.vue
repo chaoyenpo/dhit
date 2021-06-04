@@ -1,38 +1,54 @@
 <template>
-  <form @submit.prevent="submit">
-    <input
-      type="file"
-      ref="file"
-      @input="form.domains = $event.target.files[0]"
-    />
+  <jet-form-section @submitted="submit">
+    <template #title> 匯入域名與過期資訊 </template>
 
-    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-      {{ form.progress.percentage }}
+    <template #description>
+      <div class="mt-6 text-gray-500">
+        請建立副本後使用，並下載為 .csv 檔案。
+        <br />
+        範本連結：
+        <a
+          href="https://bit.ly/2S8qi8q"
+          class="text-sm text-gray-700 underline"
+          target="_blank"
+        >
+          https://bit.ly/2S8qi8q
+        </a>
+      </div>
 
-      {#if $form.progress} {$form.progress.percentage}% {/if} %
-    </progress>
+      <div class="mt-6 text-gray-500">網域名稱若相同則會覆蓋舊資料。</div>
+    </template>
 
-    <jet-button
-      type="submit"
-      :class="{ 'opacity-25': form.processing }"
-      :disabled="form.processing"
-    >
-      匯入
-    </jet-button>
+    <template #form>
+      <div class="col-span-6">
+        <input
+          type="file"
+          ref="file"
+          @input="form.domains = $event.target.files[0]"
+        />
 
-    <div class="mt-6 text-gray-500">
-      請建立副本後使用，並下載為 .csv 檔案。範本連結：
-      <a
-        href="https://bit.ly/2S8qi8q"
-        class="text-sm text-gray-700 underline"
-        target="_blank"
+        <progress
+          v-if="form.progress"
+          :value="form.progress.percentage"
+          max="100"
+        >
+          {{ form.progress.percentage }}
+
+          {#if $form.progress} {$form.progress.percentage}% {/if} %
+        </progress>
+      </div>
+    </template>
+
+    <template #actions>
+      <jet-button
+        type="submit"
+        :class="{ 'opacity-25': form.processing }"
+        :disabled="form.processing"
       >
-        https://bit.ly/2S8qi8q
-      </a>
-    </div>
-
-    <div class="mt-6 text-gray-500">網域名稱若相同則會覆蓋舊資料。</div>
-  </form>
+        匯入
+      </jet-button>
+    </template>
+  </jet-form-section>
 </template>
 
 <script>
@@ -64,7 +80,6 @@ export default {
         errorBag: "uploadDomain",
         preserveScroll: true,
         onSuccess: () => {
-          console.log(file);
           this.file.value = "";
         },
       });

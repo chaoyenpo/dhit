@@ -9,6 +9,8 @@ class Bot extends Model
 {
     use HasFactory;
 
+    const TYPE_NOTIFY = 'notify';
+
     protected $guarded = [];
 
     protected $casts = [
