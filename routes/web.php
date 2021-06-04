@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DomainValidController;
 use App\Http\Controllers\WebhookReceiverController;
 
 /*
@@ -32,4 +33,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::put('/webhooks/{webhookReceiver}', [WebhookReceiverController::class, 'update'])->name('webhooks.update');
     Route::post('/webhooks/relink', [WebhookReceiverController::class, 'relink'])->name('webhooks.relink');
     Route::delete('/webhooks/{webhookReceiver}', [WebhookReceiverController::class, 'destroy'])->name('webhooks.destroy');
+
+    Route::get('/domains', [DomainValidController::class, 'show'])->name('domains');
+    Route::post('/domains', [DomainValidController::class, 'store'])->name('domains.store');
 });

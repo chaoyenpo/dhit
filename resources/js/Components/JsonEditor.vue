@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="editor"
-    ref="dom"
-  >
-  </div>
+  <div class="editor" ref="dom"></div>
 </template>
 
 <script setup>
