@@ -15,4 +15,5 @@ class Domain extends Model
     ];
 
     protected $guarded = [];
+
 }

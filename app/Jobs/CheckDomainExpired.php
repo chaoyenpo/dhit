@@ -36,22 +36,21 @@ class CheckDomainExpired implements ShouldQueue
     public function handle()
     {
         //TODO 目前只支援一台機器人
-        $bot = BotNotify::with('bot')->first();
-
         $expired = Carbon::today()->addMonth();
-        Domain::chunk(200, function ($domains) use ($bot, $expired) {
+        Domain::with('team')->chunk(200, function ($domains) use ($expired) {
             foreach ($domains as $domain) {
                 if ($domain->expired_at->lessThanOrEqualTo($expired)) {
                     try {
+                        $botNotify = BotNotify::with('bot')->whereTeamId($domain->team->id)->first();
                         Notification::route('telegram', data_get($bot, 'chat.id'))
-                            ->notify(new DomainExpired("這個網域將在 30 天內到期:" . $domain->name, $bot));
-                        if ($bot->malfunction) {
-                            $bot->malfunction = null;
-                            $bot->save();
+                            ->notify(new DomainExpired("這個網域將在 30 天內到期:" . $domain->name, $botNotify));
+                        if ($botNotify->malfunction) {
+                            $botNotify->malfunction = null;
+                            $botNotify->save();
                         }
                     } catch (\Throwable $th) {
-                        $bot->malfunction = $th->getMessage();
-                        $bot->save();
+                        $botNotify->malfunction = $th->getMessage();
+                        $botNotify->save();
                     }
                 };  
             }
