@@ -16,10 +16,13 @@
           </template>
 
           <template #content>
-            123133
+            {{$page.props.bot?.chat?.title ?? "請將機器人連接至群組中"}}
 
             <div class="mt-5">
-              <jet-button type="button" @click="connectTelegramGroup">
+              <jet-button
+                type="button"
+                @click="connectTelegramGroup"
+              >
                 連結到群組
               </jet-button>
             </div>
@@ -35,12 +38,8 @@
         <div v-if="$page.props.domains?.length > 0">
           <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div
-                class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
-              >
-                <div
-                  class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
-                >
+              <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
@@ -76,24 +75,16 @@
                         :key="domain.name"
                         :class="domainIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
                       >
-                        <td
-                          class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {{ domain.name }}
                         </td>
-                        <td
-                          class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {{ domain.tag }}
                         </td>
-                        <td
-                          class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {{ domain.expired_at }}
                         </td>
-                        <td
-                          class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {{ domain.remark }}
                         </td>
                       </tr>
@@ -155,7 +146,7 @@ export default {
         (e) => {
           tgWindow.close();
 
-          //   this.$inertia.get(route("domains"));
+          this.$inertia.get(route("domains"));
         }
       );
     },

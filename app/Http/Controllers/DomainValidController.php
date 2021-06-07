@@ -7,6 +7,7 @@ use App\Models\Bot;
 use Inertia\Inertia;
 use ReflectionMethod;
 use App\Models\Domain;
+use App\Models\BotNotify;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -20,9 +21,11 @@ class DomainValidController extends Controller
     public function show(Request $request)
     {
         $domains = Domain::whereTeamId($request->user()->currentTeam->id)->get();
+        $bot = BotNotify::whereTeamId($request->user()->currentTeam->id)->first();
 
         return Inertia::render('Domain/Show', [
             'domains' => $domains,
+            'bot' => $bot,
         ]);
     }
 
