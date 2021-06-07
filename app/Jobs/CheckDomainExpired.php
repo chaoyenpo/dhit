@@ -42,7 +42,7 @@ class CheckDomainExpired implements ShouldQueue
                 if ($domain->expired_at->lessThanOrEqualTo($expired)) {
                     try {
                         $botNotify = BotNotify::with('bot')->whereTeamId($domain->team->id)->first();
-                        Notification::route('telegram', data_get($bot, 'chat.id'))
+                        Notification::route('telegram', data_get($botNotify, 'chat.id'))
                             ->notify(new DomainExpired("這個網域將在 30 天內到期:" . $domain->name, $botNotify));
                         if ($botNotify->malfunction) {
                             $botNotify->malfunction = null;
