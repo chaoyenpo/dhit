@@ -39,9 +39,9 @@ class DomainValidController extends Controller
 
         foreach ($data as $domain) {
             Domain::updateOrCreate([
-                'name' => $domain['name']
-            ], [
                 'team_id' => auth()->user()->currentTeam->id,
+                'name' => $domain['name']
+            ], [                
                 'tag' => $domain['tag'],
                 'expired_at' => $domain['expired_at'],
                 // 'remark' => mb_convert_encoding($domain['remark'], "UTF-8"),
