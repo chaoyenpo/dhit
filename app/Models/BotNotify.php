@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Bot;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,7 +16,7 @@ class BotNotify extends Model
     protected $casts = [
         'chat' => 'array',
     ];
-
+    
     public function bot()
     {
         return $this->belongsTo(Bot::class);
