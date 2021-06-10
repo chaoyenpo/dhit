@@ -59,14 +59,13 @@ class CheckDomainExpired implements ShouldQueue
         // 每個 team 一個檔案
         foreach ($data as $teamId => $willExpiredDomain) {
             Excel::store(new DomainExport($willExpiredDomain),  ($fileName = Carbon::today()->toDateString() . '-'. $teamId.'.xlsx'), 'public');
-            $fileUrl = Storage::disk('public')->url($fileName);
-
-            Log::debug("域名過期彙整資料" . $fileUrl, $data);
+            // $fileUrl = Storage::disk('public')->url($fileName);            
+            Log::debug("域名過期彙整資料", $data);
 
             try {
                 $botNotify = BotNotify::with('bot')->whereTeamId($teamId)->firstOrFail();
                 Notification::route('telegram', data_get($botNotify, 'chat.id'))
-                    ->notify(new DomainExpired($fileUrl, $botNotify));
+                    ->notify(new DomainExpired($fileName, $botNotify));
                 if ($botNotify->malfunction) {
                     $botNotify->malfunction = null;
                     $botNotify->save();
