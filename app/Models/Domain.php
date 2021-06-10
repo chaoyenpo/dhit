@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Carbon;
+use Laravel\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,4 +17,8 @@ class Domain extends Model
 
     protected $guarded = [];
 
+    public function team()
+    {
+        return $this->belongsTo(Jetstream::teamModel());
+    }
 }

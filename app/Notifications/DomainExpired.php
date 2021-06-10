@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use NotificationChannels\Telegram\TelegramFile;
 use Illuminate\Notifications\Messages\MailMessage;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
@@ -20,9 +21,9 @@ class DomainExpired extends Notification
      *
      * @return void
      */
-    public function __construct($data, BotNotify $botNotify)
+    public function __construct($fileUrl, BotNotify $botNotify)
     {
-        $this->data = $data;
+        $this->fileUrl = $fileUrl;
         $this->botNotify = $botNotify;
     }
 
@@ -39,12 +40,14 @@ class DomainExpired extends Notification
 
     public function toTelegram($notifiable)
     {
-        return TelegramMessage::create()
-            ->content(
-                // Telegram 只能發送 4096 bytes 的資料，扣掉 Str:limit end 結尾的三個點，只剩下 4093 bytes。
-                // 未來加入分批發送功能（可透過 Content-Length 取得字串長度再去 Chunk）。
-                '*' . Str::limit(mb_convert_encoding($this->data, "UTF-8"), 4093) . '*'
-            )->token($this->botNotify->bot->token);
+        return TelegramFile::create()
+            ->content(implode(PHP_EOL,[
+                '*網域到期通知*' . PHP_EOL,
+                // '有 n 個網域即將到期' . PHP_EOL,
+                // '有 n 個網域已過期',
+            ]))
+            ->document($this->fileUrl, '網域到期通知.xlsx')
+            ->token($this->botNotify->bot->token);
     }
 
     public function failed(\Exception $e)

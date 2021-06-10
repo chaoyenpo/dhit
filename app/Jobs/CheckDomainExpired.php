@@ -4,10 +4,14 @@ namespace App\Jobs;
 
 use App\Models\Domain;
 use App\Models\BotNotify;
+use App\Exports\DomainExport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use App\Notifications\DomainExpired;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -35,26 +39,43 @@ class CheckDomainExpired implements ShouldQueue
      */
     public function handle()
     {
-        //TODO 目前只支援一台機器人
         $expired = Carbon::today()->addMonth();
-        Domain::with('team')->chunk(200, function ($domains) use ($expired) {
+
+        $data = [];
+
+        Domain::with('team')->chunk(200, function ($domains) use ($expired, &$data) {
             foreach ($domains as $domain) {
                 if ($domain->expired_at->lessThanOrEqualTo($expired)) {
-                    try {
-                        $botNotify = BotNotify::with('bot')->whereTeamId($domain->team->id)->first();
-                        Notification::route('telegram', data_get($botNotify, 'chat.id'))
-                            ->notify(new DomainExpired("這個網域將在 30 天內到期:" . $domain->name, $botNotify));
-                        if ($botNotify->malfunction) {
-                            $botNotify->malfunction = null;
-                            $botNotify->save();
-                        }
-                    } catch (\Throwable $th) {
-                        $botNotify->malfunction = $th->getMessage();
-                        $botNotify->save();
-                    }
+                    $data[$domain->team_id][] = [
+                        $domain->name,
+                        $domain->tag,
+                        $domain->expired_at->toDateString(),
+                    ];                    
                 };  
             }
         });
+
+
+        // 每個 team 一個檔案
+        foreach ($data as $teamId => $willExpiredDomain) {
+            Excel::store(new DomainExport($willExpiredDomain),  ($fileName = Carbon::today()->toDateString() . '-'. $teamId.'.xlsx'), 'public');
+            $fileUrl = Storage::disk('public')->url($fileName);
+
+            Log::debug("域名過期彙整資料" . $fileUrl, $data);
+
+            try {
+                $botNotify = BotNotify::with('bot')->whereTeamId($teamId)->firstOrFail();
+                Notification::route('telegram', data_get($botNotify, 'chat.id'))
+                    ->notify(new DomainExpired($fileUrl, $botNotify));
+                if ($botNotify->malfunction) {
+                    $botNotify->malfunction = null;
+                    $botNotify->save();
+                }
+            } catch (\Throwable $th) {
+                $botNotify->malfunction = $th->getMessage();
+                $botNotify->save();                
+            }
+        }        
     }
 }
 

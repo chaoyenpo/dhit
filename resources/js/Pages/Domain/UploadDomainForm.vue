@@ -80,7 +80,7 @@ export default {
         errorBag: "uploadDomain",
         preserveScroll: true,
         onSuccess: () => {
-          this.file.value = "";
+          file.value.value = "";
         },
       });
     }

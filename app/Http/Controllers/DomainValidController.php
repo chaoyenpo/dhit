@@ -44,7 +44,6 @@ class DomainValidController extends Controller
             ], [                
                 'tag' => $domain['tag'],
                 'expired_at' => $domain['expired_at'],
-                // 'remark' => mb_convert_encoding($domain['remark'], "UTF-8"),
             ]);
         }
 
