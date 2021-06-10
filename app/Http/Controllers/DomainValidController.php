@@ -40,7 +40,7 @@ class DomainValidController extends Controller
         foreach ($data as $domain) {
             Domain::updateOrCreate([
                 'team_id' => auth()->user()->currentTeam->id,
-                'domain' => $domain['domain']
+                'name' => $domain['domain']
             ], [                
                 'tag' => $domain['tag'],
                 'domain_expired_at' => $domain['domain_expired_at'],
