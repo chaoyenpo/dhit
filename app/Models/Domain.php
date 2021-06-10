@@ -12,7 +12,8 @@ class Domain extends Model
     use HasFactory;
 
     protected $casts = [
-        'expired_at' => 'date',
+        'domain_expired_at' => 'date',
+        'certificate_expired_at' => 'date',
     ];
 
     protected $guarded = [];

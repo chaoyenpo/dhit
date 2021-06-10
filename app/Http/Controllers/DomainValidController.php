@@ -40,14 +40,24 @@ class DomainValidController extends Controller
         foreach ($data as $domain) {
             Domain::updateOrCreate([
                 'team_id' => auth()->user()->currentTeam->id,
-                'name' => $domain['name']
+                'domain' => $domain['domain']
             ], [                
                 'tag' => $domain['tag'],
-                'expired_at' => $domain['expired_at'],
+                'domain_expired_at' => $domain['domain_expired_at'],
+                'certificate_expired_at' => $domain['certificate_expired_at'],
             ]);
         }
 
         return back();
+    }
+
+    public function destroy(Request $request)
+    {
+        // $webhookReceiver = WebhookReceiver::findOrFail($webhookReceiverId);
+
+        // $webhookReceiver->delete();
+
+        return redirect()->intended(route('domains'));
     }
 
     public function link(Request $request)
