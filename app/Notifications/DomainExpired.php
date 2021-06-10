@@ -46,7 +46,7 @@ class DomainExpired extends Notification
                 // '有 n 個網域即將到期' . PHP_EOL,
                 // '有 n 個網域已過期',
             ]))
-            ->document($this->fileUrl, '網域到期通知.xlsx')
+            ->document($this->fileUrl, 'document')
             ->token($this->botNotify->bot->token);
     }
 
