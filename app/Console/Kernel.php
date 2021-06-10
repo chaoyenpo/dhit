@@ -25,7 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new CheckDomainExpired)->everyMinute();
+        $schedule->job(new CheckDomainExpired)
+        ->timezone('Asia/Taipei')
+        ->dailyAt('13:15');
     }
 
     /**

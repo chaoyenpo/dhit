@@ -41,6 +41,8 @@ class DomainExpired extends Notification
 
     public function toTelegram($notifiable)
     {
+        // https://stackoverflow.com/questions/61992646/send-xls-file-telegram-bot
+        // 後續不需要儲存檔案就可以直接發送了
         $file = Storage::disk('public')->get($this->fileName);
         return TelegramFile::create()
             ->content(implode(PHP_EOL,[
