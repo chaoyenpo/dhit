@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\Domain as DomainResource;
 
 class DomainValidController extends Controller
 {
@@ -24,7 +25,7 @@ class DomainValidController extends Controller
         $bot = BotNotify::whereTeamId($request->user()->currentTeam->id)->first();
 
         return Inertia::render('Domain/Show', [
-            'domains' => $domains,
+            'domains' => DomainResource::collection($domains),
             'bot' => $bot,
         ]);
     }
@@ -44,7 +45,7 @@ class DomainValidController extends Controller
             ], [                
                 'tag' => $domain['tag'],
                 'domain_expired_at' => $domain['domain_expired_at'],
-                'certificate_expired_at' => $domain['certificate_expired_at'],
+                'certificate_expired_at' => $domain['certificate_expired_at'] ?: null,
             ]);
         }
 

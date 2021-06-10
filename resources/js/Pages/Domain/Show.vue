@@ -59,7 +59,13 @@
                           scope="col"
                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                         >
-                          到期時間
+                          域名到期時間
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          憑證到期時間
                         </th>
                       </tr>
                     </thead>
@@ -76,7 +82,10 @@
                           {{ domain.tag }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {{ domain.expired_at }}
+                          {{ domain.domain_expired_at }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {{ domain.certificate_expired_at }}
                         </td>
                       </tr>
                     </tbody>
