@@ -3,9 +3,12 @@
     <jet-button
       type="button"
       @click="deleteDomain"
+      class="mr-auto"
     >
       刪除
     </jet-button>
+
+    <pagination :links="$page.props.domains.links" />
   </div>
 
   <div class="flex flex-col">
@@ -55,7 +58,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="(domain, domainIdx) in $page.props.domains"
+                v-for="(domain, domainIdx) in $page.props.domains.data"
                 :key="domain.name"
                 :class="domainIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
               >
@@ -90,6 +93,7 @@
 </template>
 
 <script>
+import Pagination from "@/Components/Pagination";
 import JetCheckbox from "@/Jetstream/Checkbox";
 import JetButton from "@/Jetstream/Button";
 
@@ -97,10 +101,12 @@ export default {
   components: {
     JetCheckbox,
     JetButton,
+    Pagination,
   },
   computed: {
     selectAll: {
       get: function () {
+        console.log(this.$page.props.domains);
         return this.$page.props.domains
           ? this.form.selected.length == this.$page.props.domains.length
           : false;
