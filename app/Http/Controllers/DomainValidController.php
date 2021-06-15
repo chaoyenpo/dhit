@@ -10,7 +10,9 @@ use App\Models\Domain;
 use App\Models\BotNotify;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Imports\DomainImport;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
@@ -36,19 +38,21 @@ class DomainValidController extends Controller
             'domains' => ['required', 'file'],
         ])->validateWithBag('uploadDomain');
 
-        $data = $this->csv_to_array($request->file('domains'));
+        $data = Excel::import(new DomainImport, $request->file('domains'));
 
-        foreach ($data as $domain) {
-            Domain::updateOrCreate([
-                'team_id' => auth()->user()->currentTeam->id,
-                'name' => $domain['domain']
-            ], [                
-                'tag' => $domain['tag'],
-                'domain_expired_at' => $domain['domain_expired_at'],
-                'certificate_expired_at' => $domain['certificate_expired_at'] ?: null,
-                'remark' => $this->unicodeString($domain['remark']),
-            ]);
-        }
+        // dd($data);
+
+        // foreach ($data as $domain) {
+        //     Domain::updateOrCreate([
+        //         'team_id' => auth()->user()->currentTeam->id,
+        //         'name' => $domain['domain']
+        //     ], [                
+        //         'tag' => $domain['tag'],
+        //         'domain_expired_at' => $domain['domain_expired_at'],
+        //         'certificate_expired_at' => $domain['certificate_expired_at'] ?: null,
+        //         'remark' => $this->unicodeString($domain['remark']),
+        //     ]);
+        // }
 
         return back();
     }
