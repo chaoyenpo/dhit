@@ -2,7 +2,7 @@
   <div class="flex mb-5">
     <jet-button
       type="button"
-      @click="test"
+      @click="deleteDomain"
     >
       刪除
     </jet-button>
@@ -127,8 +127,14 @@ export default {
   },
 
   methods: {
-    test() {
-      console.log(this.form.selected);
+    deleteDomain() {
+      this.form.delete(route("domains.destroy"), {
+        errorBag: "deleteDomain",
+        preserveScroll: true,
+        onSuccess: () => {
+          this.form.selected = [];
+        },
+      });
     },
   },
 };

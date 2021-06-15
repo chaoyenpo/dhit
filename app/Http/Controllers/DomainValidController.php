@@ -46,7 +46,7 @@ class DomainValidController extends Controller
                 'tag' => $domain['tag'],
                 'domain_expired_at' => $domain['domain_expired_at'],
                 'certificate_expired_at' => $domain['certificate_expired_at'] ?: null,
-                'remark' => $domain['remark'] ?: null,
+                'remark' => mb_convert_encoding($domain['remark'], 'UTF-8', 'UTF-16BE'),
             ]);
         }
 
@@ -55,9 +55,11 @@ class DomainValidController extends Controller
 
     public function destroy(Request $request)
     {
-        // $webhookReceiver = WebhookReceiver::findOrFail($webhookReceiverId);
-
-        // $webhookReceiver->delete();
+        Validator::make($request->all(), [
+            'selected' => ['required'],
+        ])->validateWithBag('deleteDomain');
+        
+        Domain::destroy($request->selected);
 
         return redirect()->intended(route('domains'));
     }
