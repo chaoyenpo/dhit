@@ -50,7 +50,7 @@ class CheckDomainExpired implements ShouldQueue
                         $domain->name,
                         $domain->tag,
                         $domain->domain_expired_at->toDateString(),
-                        $domain->certificate_expired_at->toDateString(),
+                        $domain->certificate_expired_at ? $domain->certificate_expired_at->toDateString() : '',
                         $domain->remark,
                     ];
                     continue;
