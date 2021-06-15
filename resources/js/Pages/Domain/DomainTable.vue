@@ -106,16 +106,15 @@ export default {
   computed: {
     selectAll: {
       get: function () {
-        console.log(this.$page.props.domains);
-        return this.$page.props.domains
-          ? this.form.selected.length == this.$page.props.domains.length
+        return this.$page.props.domains.data
+          ? this.form.selected.length == this.$page.props.domains.data.length
           : false;
       },
       set: function (value) {
         var selected = [];
 
         if (value) {
-          this.$page.props.domains.forEach(function (user) {
+          this.$page.props.domains.data.forEach(function (user) {
             selected.push(user.id);
           });
         }
