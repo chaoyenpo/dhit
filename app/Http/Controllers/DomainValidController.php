@@ -39,21 +39,7 @@ class DomainValidController extends Controller
         ])->validateWithBag('uploadDomain');
 
         $data = Excel::import(new DomainImport, $request->file('domains'));
-
-        // dd($data);
-
-        // foreach ($data as $domain) {
-        //     Domain::updateOrCreate([
-        //         'team_id' => auth()->user()->currentTeam->id,
-        //         'name' => $domain['domain']
-        //     ], [                
-        //         'tag' => $domain['tag'],
-        //         'domain_expired_at' => $domain['domain_expired_at'],
-        //         'certificate_expired_at' => $domain['certificate_expired_at'] ?: null,
-        //         'remark' => $this->unicodeString($domain['remark']),
-        //     ]);
-        // }
-
+        
         return back();
     }
 
