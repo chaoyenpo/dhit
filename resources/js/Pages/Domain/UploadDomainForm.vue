@@ -4,8 +4,6 @@
 
     <template #description>
       <div class="mt-6 text-gray-500">
-        請建立副本後使用，並下載為 .csv 檔案。
-        <br />
         範本連結：
         <a
           href="https://bit.ly/2S8qi8q"
@@ -21,11 +19,13 @@
 
     <template #form>
       <div class="col-span-6">
+
         <input
           type="file"
           ref="file"
           @input="form.domains = $event.target.files[0]"
         />
+        <div class="mt-6 text-gray-500">支援 Excel (.xlsx)</div>
 
         <progress
           v-if="form.progress"
