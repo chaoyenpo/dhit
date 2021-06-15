@@ -1,6 +1,9 @@
 <template>
   <div class="flex mb-5">
-    <jet-button type="button">
+    <jet-button
+      type="button"
+      @click="test"
+    >
       刪除
     </jet-button>
   </div>
@@ -16,7 +19,7 @@
                   scope="col"
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  <jet-checkbox name="all" />
+                  <jet-checkbox v-model:checked="selectAll" />
                 </th>
                 <th
                   scope="col"
@@ -42,6 +45,12 @@
                 >
                   憑證到期時間
                 </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  備註
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -51,7 +60,10 @@
                 :class="domainIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
               >
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  <jet-checkbox name="all" />
+                  <jet-checkbox
+                    :value="domain.id"
+                    v-model:checked="form.selected"
+                  />
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {{ domain.name }}
@@ -64,6 +76,9 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ domain.certificate_expired_at }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{ domain.remark }}
                 </td>
               </tr>
             </tbody>
@@ -83,15 +98,38 @@ export default {
     JetCheckbox,
     JetButton,
   },
+  computed: {
+    selectAll: {
+      get: function () {
+        return this.$page.props.domains
+          ? this.form.selected.length == this.$page.props.domains.length
+          : false;
+      },
+      set: function (value) {
+        var selected = [];
 
+        if (value) {
+          this.$page.props.domains.forEach(function (user) {
+            selected.push(user.id);
+          });
+        }
+
+        this.form.selected = selected;
+      },
+    },
+  },
   data() {
     return {
-      //
+      form: this.$inertia.form({
+        selected: [],
+      }),
     };
   },
 
   methods: {
-    //
+    test() {
+      console.log(this.form.selected);
+    },
   },
 };
 </script>

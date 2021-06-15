@@ -20,6 +20,7 @@ class Domain extends JsonResource
             'tag' => $this->tag,            
             'domain_expired_at' => $this->domain_expired_at->toDateString(),
             'certificate_expired_at' => $this->certificate_expired_at ? $this->certificate_expired_at->toDateString() : '',
+            'remark' => $this->remark,
         ];
     }
 }

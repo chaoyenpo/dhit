@@ -46,6 +46,7 @@ class DomainValidController extends Controller
                 'tag' => $domain['tag'],
                 'domain_expired_at' => $domain['domain_expired_at'],
                 'certificate_expired_at' => $domain['certificate_expired_at'] ?: null,
+                'remark' => $domain['remark'] ?: null,
             ]);
         }
 
