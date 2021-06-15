@@ -46,11 +46,18 @@ class DomainValidController extends Controller
                 'tag' => $domain['tag'],
                 'domain_expired_at' => $domain['domain_expired_at'],
                 'certificate_expired_at' => $domain['certificate_expired_at'] ?: null,
-                'remark' => mb_convert_encoding($domain['remark'], 'UTF-8', 'UTF-16BE'),
+                'remark' => $this->unicodeString($domain['remark']),
             ]);
         }
 
         return back();
+    }
+
+    private function unicodeString($str, $encoding=null) {
+        if (is_null($encoding)) $encoding = ini_get('mbstring.internal_encoding');
+        return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/u', function($match) use ($encoding) {
+            return mb_convert_encoding(pack('H*', $match[1]), $encoding, 'UTF-16BE');
+        }, $str);
     }
 
     public function destroy(Request $request)
