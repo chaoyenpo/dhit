@@ -45,7 +45,18 @@ class CheckDomainExpired implements ShouldQueue
 
         Domain::with('team')->chunk(200, function ($domains) use ($expired, &$data) {
             foreach ($domains as $domain) {
-                if ($domain->domain_expired_at->lessThanOrEqualTo($expired) || $domain->certificate_expired_at->lessThanOrEqualTo($expired)) {
+                if ($domain->domain_expired_at->lessThanOrEqualTo($expired)) {
+                    $data[$domain->team_id][] = [
+                        $domain->name,
+                        $domain->tag,
+                        $domain->domain_expired_at->toDateString(),
+                        $domain->certificate_expired_at->toDateString(),
+                        $domain->remark,
+                    ];
+                    continue;
+                };  
+
+                if ($domain->certificate_expired_at &&  $domain->certificate_expired_at->lessThanOrEqualTo($expired)) {
                     $data[$domain->team_id][] = [
                         $domain->name,
                         $domain->tag,
@@ -53,7 +64,7 @@ class CheckDomainExpired implements ShouldQueue
                         $domain->certificate_expired_at->toDateString(),
                         $domain->remark,
                     ];                    
-                };  
+                }
             }
         });
 
