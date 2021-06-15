@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new CheckDomainExpired)
         ->timezone('Asia/Taipei')
-        ->dailyAt('11:05');
+        ->dailyAt('11:12');
     }
 
     /**
