@@ -16,14 +16,19 @@ class DomainImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
+        // dd($row);
         return Domain::updateOrCreate([
             'team_id' => auth()->user()->currentTeam->id,
-            'name' => $row['domain'],
+            'name' => $row['網域名稱'],
         ],[
-            'tag' => $row['tag'],
-            'domain_expired_at' => Date::excelToDateTimeObject($row['domain_expired_at']),
-            'certificate_expired_at' => $row['certificate_expired_at'] ? Date::excelToDateTimeObject($row['certificate_expired_at']) : null,
-            'remark' => $row['remark'],
+            'tag' => $row['標籤'],
+            'domain_expired_at' => Date::excelToDateTimeObject($row['域名到期時間']),
+            'certificate_expired_at' => $row['憑證到期時間'] ? Date::excelToDateTimeObject($row['憑證到期時間']) : null,
+            'product' => $row['產品'],
+            'submit' => $row['提交者'],
+            'dns' => $row['DNS'],
+            'vendor' => $row['域名商'],
+            'remark' => $row['備註'],
         ]);
     }
 }

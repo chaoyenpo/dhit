@@ -25,6 +25,10 @@ class DomainExport implements FromArray, WithHeadings
             '標籤',
             '域名到期時間',
             '憑證到期時間',
+            '產品',
+            '提交者',
+            'DNS',
+            '域名商',
             '備註'
         ];
     }
