@@ -116,7 +116,7 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ domain.vendor }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td class="px-6 py-4  text-sm text-gray-500">
                   {{ domain.remark }}
                 </td>
               </tr>
