@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BotController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DomainValidController;
 use App\Http\Controllers\WebhookReceiverController;
@@ -38,4 +38,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/domains', [DomainValidController::class, 'store'])->name('domains.store');
     Route::post('/domains/link', [DomainValidController::class, 'link'])->name('domains.link');
     Route::delete('/domains', [DomainValidController::class, 'destroy'])->name('domains.destroy');
+
+    Route::get('/admin', [AdminController::class, 'show'])->name('admin');
 });
