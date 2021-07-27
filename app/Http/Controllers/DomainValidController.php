@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Throwable;
 use App\Models\Bot;
 use App\Models\BotNotify;
 use Inertia\Inertia;
@@ -11,7 +10,6 @@ use App\Models\Domain;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Imports\DomainImport;
-use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
