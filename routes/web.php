@@ -37,4 +37,5 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/domains', [DomainValidController::class, 'show'])->name('domains');
     Route::post('/domains', [DomainValidController::class, 'store'])->name('domains.store');
     Route::post('/domains/link', [DomainValidController::class, 'link'])->name('domains.link');
+    Route::delete('/domains', [DomainValidController::class, 'destroy'])->name('domains.destroy');
 });

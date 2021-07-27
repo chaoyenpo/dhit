@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Bot;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

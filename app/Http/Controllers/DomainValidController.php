@@ -10,21 +10,24 @@ use ReflectionMethod;
 use App\Models\Domain;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Imports\DomainImport;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\Domain as DomainResource;
 
 class DomainValidController extends Controller
 {
     public function show(Request $request)
     {
-        $domains = Domain::whereTeamId($request->user()->currentTeam->id)->get();
+        $domains = Domain::whereTeamId($request->user()->currentTeam->id)->paginate(100);
         $bot = BotNotify::whereTeamId($request->user()->currentTeam->id)->first();
 
         return Inertia::render('Domain/Show', [
-            'domains' => $domains,
+            'domains' => DomainResource::collection($domains),
             'bot' => $bot,
         ]);
     }
@@ -35,20 +38,28 @@ class DomainValidController extends Controller
             'domains' => ['required', 'file'],
         ])->validateWithBag('uploadDomain');
 
-        $data = $this->csv_to_array($request->file('domains'));
-
-        foreach ($data as $domain) {
-            Domain::updateOrCreate([
-                'name' => $domain['name']
-            ], [
-                'team_id' => auth()->user()->currentTeam->id,
-                'tag' => $domain['tag'],
-                'expired_at' => $domain['expired_at'],
-                'remark' => $domain['remark'],
-            ]);
-        }
+        $data = Excel::import(new DomainImport, $request->file('domains'));
 
         return back();
+    }
+
+    private function unicodeString($str, $encoding = null)
+    {
+        if (is_null($encoding)) $encoding = ini_get('mbstring.internal_encoding');
+        return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/u', function ($match) use ($encoding) {
+            return mb_convert_encoding(pack('H*', $match[1]), $encoding, 'UTF-16BE');
+        }, $str);
+    }
+
+    public function destroy(Request $request)
+    {
+        Validator::make($request->all(), [
+            'selected' => ['required'],
+        ])->validateWithBag('deleteDomain');
+
+        Domain::destroy($request->selected);
+
+        return redirect()->intended(route('domains'));
     }
 
     public function link(Request $request)
