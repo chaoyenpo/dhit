@@ -32,14 +32,6 @@
                   域名到期通知
                 </jet-nav-link>
               </div>
-              <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                <jet-nav-link
-                  :href="route('admin')"
-                  :active="route().current('admin')"
-                >
-                  管理控制台
-                </jet-nav-link>
-              </div> -->
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -101,7 +93,9 @@
                         </div>
 
                         <jet-dropdown-link>使用者列表</jet-dropdown-link>
-                        <jet-dropdown-link>新增使用者</jet-dropdown-link>
+                        <jet-dropdown-link :href="route('users.create')"
+                          >新增使用者</jet-dropdown-link
+                        >
 
                         <div class="border-t border-gray-100"></div>
 
