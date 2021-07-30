@@ -108,7 +108,9 @@
                           管理團隊
                         </div>
 
-                        <jet-dropdown-link>團隊列表</jet-dropdown-link>
+                        <jet-dropdown-link :href="route('teams.index')">
+                          團隊列表
+                        </jet-dropdown-link>
                         <jet-dropdown-link :href="route('teams.create')">
                           建立新團隊
                         </jet-dropdown-link>
