@@ -1,73 +1,86 @@
 <template>
-    <jet-form-section @submitted="createTeam">
-        <template #title>
-            Team Details
-        </template>
+  <jet-form-section @submitted="createTeam">
+    <template #title> 團隊資訊 </template>
 
-        <template #description>
-            Create a new team to collaborate with others on projects.
-        </template>
+    <template #description> </template>
 
-        <template #form>
-            <div class="col-span-6">
-                <jet-label value="Team Owner" />
+    <template #form>
+      <div class="col-span-6 sm:col-span-4">
+        <jet-label for="name" value="團隊名稱" />
+        <jet-input
+          id="name"
+          type="text"
+          class="mt-1 block w-full"
+          v-model="form.name"
+          autofocus
+        />
+        <jet-input-error :message="form.errors.name" class="mt-2" />
+      </div>
 
-                <div class="flex items-center mt-2">
-                    <img class="w-12 h-12 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name">
+      <!-- Token Permissions -->
+      <div class="col-span-6" v-if="availablePermissions.length > 0">
+        <jet-label for="permissions" value="功能" />
 
-                    <div class="ml-4 leading-tight">
-                        <div>{{ $page.props.user.name }}</div>
-                        <div class="text-gray-700 text-sm">{{ $page.props.user.email }}</div>
-                    </div>
-                </div>
-            </div>
+        <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div v-for="permission in availablePermissions" :key="permission">
+            <label class="flex items-center">
+              <jet-checkbox
+                :value="permission"
+                v-model:checked="form.permissions"
+              />
+              <span class="ml-2 text-sm text-gray-600">{{ permission }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </template>
 
-            <div class="col-span-6 sm:col-span-4">
-                <jet-label for="name" value="Team Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" autofocus />
-                <jet-input-error :message="form.errors.name" class="mt-2" />
-            </div>
-        </template>
-
-        <template #actions>
-            <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Create
-            </jet-button>
-        </template>
-    </jet-form-section>
+    <template #actions>
+      <jet-button
+        :class="{ 'opacity-25': form.processing }"
+        :disabled="form.processing"
+      >
+        Create
+      </jet-button>
+    </template>
+  </jet-form-section>
 </template>
 
 <script>
-    import JetButton from '@/Jetstream/Button'
-    import JetFormSection from '@/Jetstream/FormSection'
-    import JetInput from '@/Jetstream/Input'
-    import JetInputError from '@/Jetstream/InputError'
-    import JetLabel from '@/Jetstream/Label'
+import JetButton from "@/Jetstream/Button";
+import JetFormSection from "@/Jetstream/FormSection";
+import JetInput from "@/Jetstream/Input";
+import JetInputError from "@/Jetstream/InputError";
+import JetLabel from "@/Jetstream/Label";
+import JetCheckbox from "@/Jetstream/Checkbox";
 
-    export default {
-        components: {
-            JetButton,
-            JetFormSection,
-            JetInput,
-            JetInputError,
-            JetLabel,
-        },
+export default {
+  components: {
+    JetButton,
+    JetFormSection,
+    JetInput,
+    JetInputError,
+    JetLabel,
+    JetCheckbox,
+  },
 
-        data() {
-            return {
-                form: this.$inertia.form({
-                    name: '',
-                })
-            }
-        },
+  data() {
+    return {
+      form: this.$inertia.form({
+        name: "",
+        permissions: [],
+      }),
+      availablePermissions: ["Webhook 接收器", "域名到期通知"],
+    };
+  },
 
-        methods: {
-            createTeam() {
-                this.form.post(route('teams.store'), {
-                    errorBag: 'createTeam',
-                    preserveScroll: true
-                });
-            },
-        },
-    }
+  methods: {
+    createTeam() {
+      this.form.post(route("teams.store"), {
+        errorBag: "createTeam",
+        preserveScroll: true,
+      });
+    },
+  },
+};
 </script>

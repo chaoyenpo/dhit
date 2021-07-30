@@ -181,28 +181,6 @@
                     <div class="w-60">
                       <!-- Team Management -->
                       <template v-if="$page.props.jetstream.hasTeamFeatures">
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                          管理團隊
-                        </div>
-
-                        <!-- Team Settings -->
-                        <jet-dropdown-link
-                          :href="
-                            route('teams.show', $page.props.user.current_team)
-                          "
-                        >
-                          團隊設定
-                        </jet-dropdown-link>
-
-                        <jet-dropdown-link
-                          :href="route('teams.create')"
-                          v-if="$page.props.jetstream.canCreateTeams"
-                        >
-                          建立新團隊
-                        </jet-dropdown-link>
-
-                        <div class="border-t border-gray-100"></div>
-
                         <!-- Team Switcher -->
                         <div class="block px-4 py-2 text-xs text-gray-400">
                           切換團隊
