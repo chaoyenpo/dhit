@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DomainValidController;
@@ -40,4 +41,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::delete('/domains', [DomainValidController::class, 'destroy'])->name('domains.destroy');
 
     Route::get('/admin', [AdminController::class, 'show'])->name('admin');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
 });

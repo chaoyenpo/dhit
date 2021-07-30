@@ -18,6 +18,7 @@
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <jet-nav-link
+                  v-if="!$page.props.user.current_team.personal_team"
                   :href="route('webhooks')"
                   :active="route().current('webhooks')"
                 >
@@ -26,6 +27,7 @@
               </div>
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <jet-nav-link
+                  v-if="!$page.props.user.current_team.personal_team"
                   :href="route('domains')"
                   :active="route().current('domains')"
                 >
@@ -92,10 +94,12 @@
                           管理使用者
                         </div>
 
-                        <jet-dropdown-link>使用者列表</jet-dropdown-link>
-                        <jet-dropdown-link :href="route('users.create')"
-                          >新增使用者</jet-dropdown-link
-                        >
+                        <jet-dropdown-link :href="route('users.index')">
+                          使用者列表
+                        </jet-dropdown-link>
+                        <jet-dropdown-link :href="route('users.create')">
+                          新增使用者
+                        </jet-dropdown-link>
 
                         <div class="border-t border-gray-100"></div>
 
@@ -105,7 +109,9 @@
                         </div>
 
                         <jet-dropdown-link>團隊列表</jet-dropdown-link>
-                        <jet-dropdown-link>建立新團隊</jet-dropdown-link>
+                        <jet-dropdown-link :href="route('teams.create')">
+                          建立新團隊
+                        </jet-dropdown-link>
 
                         <div class="border-t border-gray-100"></div>
 

@@ -41,14 +41,6 @@ class DomainValidController extends Controller
         return back();
     }
 
-    private function unicodeString($str, $encoding = null)
-    {
-        if (is_null($encoding)) $encoding = ini_get('mbstring.internal_encoding');
-        return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/u', function ($match) use ($encoding) {
-            return mb_convert_encoding(pack('H*', $match[1]), $encoding, 'UTF-16BE');
-        }, $str);
-    }
-
     public function destroy(Request $request)
     {
         Validator::make($request->all(), [
