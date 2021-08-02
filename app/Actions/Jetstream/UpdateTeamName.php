@@ -26,6 +26,7 @@ class UpdateTeamName implements UpdatesTeamNames
 
         $team->forceFill([
             'name' => $input['name'],
+            'features' => $input['permissions']
         ])->save();
     }
 }

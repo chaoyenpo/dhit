@@ -1,6 +1,6 @@
 <template>
   <div class="flex mb-5">
-    <jet-button type="button" @click="deleteDomain" class="mr-auto">
+    <jet-button type="button" @click="deleteDomain" class="hidden mr-auto">
       刪除
     </jet-button>
 
@@ -58,6 +58,20 @@
                 >
                   電子郵件
                 </th>
+                <th
+                  scope="col"
+                  class="
+                    px-6
+                    py-3
+                    text-left text-xs
+                    font-medium
+                    text-gray-500
+                    uppercase
+                    tracking-wider
+                  "
+                >
+                  機構單位
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -104,6 +118,18 @@
                   "
                 >
                   {{ user.email }}
+                </td>
+                <td
+                  class="
+                    px-6
+                    py-4
+                    whitespace-nowrap
+                    text-sm
+                    font-medium
+                    text-gray-900
+                  "
+                >
+                  {{ user.organization }}
                 </td>
               </tr>
             </tbody>

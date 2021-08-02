@@ -22,13 +22,18 @@
         <jet-label for="permissions" value="功能" />
 
         <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div v-for="permission in availablePermissions" :key="permission">
+          <div
+            v-for="permission in availablePermissions"
+            :key="permission.slug"
+          >
             <label class="flex items-center">
               <jet-checkbox
-                :value="permission"
+                :value="permission.slug"
                 v-model:checked="form.permissions"
               />
-              <span class="ml-2 text-sm text-gray-600">{{ permission }}</span>
+              <span class="ml-2 text-sm text-gray-600">
+                {{ permission.name }}
+              </span>
             </label>
           </div>
         </div>
@@ -70,7 +75,16 @@ export default {
         name: "",
         permissions: [],
       }),
-      availablePermissions: ["Webhook 接收器", "域名到期通知"],
+      availablePermissions: [
+        {
+          name: "Webhook 接收器",
+          slug: "webhook_receiver",
+        },
+        {
+          name: "網域通知服務",
+          slug: "domain_notify",
+        },
+      ],
     };
   },
 

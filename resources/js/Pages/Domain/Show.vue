@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        網域到期通知
+        域名到期通知
       </h2>
     </template>
 
@@ -16,13 +16,10 @@
           </template>
 
           <template #content>
-            {{$page.props.bot?.chat?.title ?? "請將機器人連接至群組中"}}
+            {{ $page.props.bot?.chat?.title ?? "請將機器人連接至群組中" }}
 
             <div class="mt-5">
-              <jet-button
-                type="button"
-                @click="connectTelegramGroup"
-              >
+              <jet-button type="button" @click="connectTelegramGroup">
                 連結到群組
               </jet-button>
             </div>

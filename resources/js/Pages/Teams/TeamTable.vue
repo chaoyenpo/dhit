@@ -1,8 +1,8 @@
 <template>
   <div class="flex mb-5">
-    <jet-button type="button" @click="deleteDomain" class="mr-auto">
+    <!-- <jet-button type="button" @click="deleteDomain" class="mr-auto">
       刪除
-    </jet-button>
+    </jet-button> -->
 
     <pagination :links="$page.props.teams.links" />
   </div>
@@ -29,6 +29,20 @@
                   "
                 >
                   <jet-checkbox v-model:checked="selectAll" />
+                </th>
+                <th
+                  scope="col"
+                  class="
+                    px-6
+                    py-3
+                    text-left text-xs
+                    font-medium
+                    text-gray-500
+                    uppercase
+                    tracking-wider
+                  "
+                >
+                  ID
                 </th>
                 <th
                   scope="col"
@@ -105,7 +119,7 @@
                     text-gray-900
                   "
                 >
-                  {{ user.name }}
+                  {{ user.id }}
                 </td>
                 <td
                   class="
@@ -117,7 +131,13 @@
                     text-gray-900
                   "
                 >
-                  {{ user.email }}1 人
+                  <inertia-link :href="route('teams.show', user)">
+                    <button
+                      class="cursor-pointer text-sm text-gray-400 underline"
+                    >
+                      {{ user.name }}
+                    </button>
+                  </inertia-link>
                 </td>
                 <td
                   class="
@@ -129,7 +149,19 @@
                     text-gray-900
                   "
                 >
-                  {{ user.email }}2 項
+                  {{ user.users.length }} 人
+                </td>
+                <td
+                  class="
+                    px-6
+                    py-4
+                    whitespace-nowrap
+                    text-sm
+                    font-medium
+                    text-gray-900
+                  "
+                >
+                  {{ user.features.length }} 項
                 </td>
               </tr>
             </tbody>

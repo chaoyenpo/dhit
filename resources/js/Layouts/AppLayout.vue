@@ -16,18 +16,30 @@
               </div>
 
               <!-- Navigation Links -->
-              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+              <div
+                v-if="
+                  $page.props.user.current_team.features.includes(
+                    'webhook_receiver'
+                  )
+                "
+                class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
+              >
                 <jet-nav-link
-                  v-if="!$page.props.user.current_team.personal_team"
                   :href="route('webhooks')"
                   :active="route().current('webhooks')"
                 >
                   Webhook 接收器
                 </jet-nav-link>
               </div>
-              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+              <div
+                v-if="
+                  $page.props.user.current_team.features.includes(
+                    'domain_notify'
+                  )
+                "
+                class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
+              >
                 <jet-nav-link
-                  v-if="!$page.props.user.current_team.personal_team"
                   :href="route('domains')"
                   :active="route().current('domains')"
                 >
@@ -42,7 +54,7 @@
                 <jet-dropdown
                   align="right"
                   width="60"
-                  v-if="$page.props.jetstream.hasTeamFeatures"
+                  v-if="$page.props.user.id === 1"
                 >
                   <template #trigger>
                     <span class="inline-flex rounded-md">
