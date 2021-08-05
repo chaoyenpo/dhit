@@ -30,7 +30,7 @@ class AuthController extends Controller
         // 先查詢是否為已建立的使用者
 
         if (!$user = User::whereEmail($googleUser->getEmail())->first()) {
-            return Inertia::render('Auth/Login', [
+            return Inertia::render('Welcome', [
                 'flash' => [
                     'banner' => '登入失敗，尚未建立的使用者。請聯絡管理員。'
                 ]
