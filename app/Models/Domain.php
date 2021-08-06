@@ -14,6 +14,7 @@ class Domain extends Model
     protected $casts = [
         'domain_expired_at' => 'date',
         'certificate_expired_at' => 'date',
+        'nameservers' => 'array',
     ];
 
     protected $guarded = [];
