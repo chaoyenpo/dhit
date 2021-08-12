@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        域名到期通知
+        網域到期通知
       </h2>
     </template>
 

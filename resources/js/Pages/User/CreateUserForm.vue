@@ -28,7 +28,7 @@
         <jet-input-error :message="form.errors.email" class="mt-2" />
       </div>
 
-      <div class="col-span-6 sm:col-span-4">
+      <!-- <div class="col-span-6 sm:col-span-4">
         <jet-label for="organization" value="機構單位" />
         <jet-input
           id="organization"
@@ -37,7 +37,7 @@
           v-model="form.organization"
         />
         <jet-input-error :message="form.errors.organization" class="mt-2" />
-      </div>
+      </div> -->
     </template>
 
     <template #actions>

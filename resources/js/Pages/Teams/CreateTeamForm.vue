@@ -1,12 +1,12 @@
 <template>
   <jet-form-section @submitted="createTeam">
-    <template #title> 團隊資訊 </template>
+    <template #title> 專案資訊 </template>
 
     <template #description> </template>
 
     <template #form>
       <div class="col-span-6 sm:col-span-4">
-        <jet-label for="name" value="團隊名稱" />
+        <jet-label for="name" value="專案名稱" />
         <jet-input
           id="name"
           type="text"

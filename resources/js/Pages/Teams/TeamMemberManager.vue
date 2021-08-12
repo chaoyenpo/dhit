@@ -5,7 +5,7 @@
 
       <!-- Add Team Member -->
       <jet-form-section @submitted="addTeamMember">
-        <template #title> 新增團隊成員 </template>
+        <template #title> 新增專案成員 </template>
 
         <template #description>
           <!-- Add a new team member to your team, allowing them to collaborate with you. -->
@@ -148,7 +148,7 @@
 
       <!-- Team Member Invitations -->
       <jet-action-section class="mt-10 sm:mt-0">
-        <template #title> 待處理的團隊邀請 </template>
+        <template #title> 待處理的專案成員邀請 </template>
 
         <template #description>
           這些人已被邀請加入您的團隊並已收到邀請電子郵件。
@@ -191,9 +191,9 @@
 
       <!-- Manage Team Members -->
       <jet-action-section class="mt-10 sm:mt-0">
-        <template #title> 團隊成員 </template>
+        <template #title> 專案成員 </template>
 
-        <template #description> 所有屬於這個團隊的人。 </template>
+        <template #description> 所有屬於這個專案的人。 </template>
 
         <!-- Team Member List -->
         <template #content>
@@ -360,9 +360,9 @@
       :show="confirmingLeavingTeam"
       @close="confirmingLeavingTeam = false"
     >
-      <template #title> 離開團隊 </template>
+      <template #title> 離開專案 </template>
 
-      <template #content> 您確定要離開這個團隊嗎？ </template>
+      <template #content> 您確定要離開這個專案嗎？ </template>
 
       <template #footer>
         <jet-secondary-button @click="confirmingLeavingTeam = false">
@@ -385,9 +385,9 @@
       :show="teamMemberBeingRemoved"
       @close="teamMemberBeingRemoved = null"
     >
-      <template #title> 刪除團隊成員 </template>
+      <template #title> 刪除專案成員 </template>
 
-      <template #content> 您確定要從團隊中刪除此人嗎？ </template>
+      <template #content> 您確定要從專案中刪除此人嗎？ </template>
 
       <template #footer>
         <jet-secondary-button @click="teamMemberBeingRemoved = null">

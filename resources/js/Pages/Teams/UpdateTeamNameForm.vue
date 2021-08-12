@@ -1,8 +1,8 @@
 <template>
   <jet-form-section @submitted="updateTeamName">
-    <template #title> 團隊名稱 </template>
+    <template #title> 專案名稱 </template>
 
-    <template #description> 顯示團隊名稱和一些資訊。 </template>
+    <template #description> 顯示專案名稱和一些資訊。 </template>
 
     <template #form>
       <!-- Team Owner Information -->
@@ -25,7 +25,7 @@
 
       <!-- Team Name -->
       <div class="col-span-6 sm:col-span-4">
-        <jet-label for="name" value="團隊名稱" />
+        <jet-label for="name" value="專案名稱" />
 
         <jet-input
           id="name"

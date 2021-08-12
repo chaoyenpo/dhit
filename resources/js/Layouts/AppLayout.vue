@@ -43,7 +43,7 @@
                   :href="route('domains')"
                   :active="route().current('domains')"
                 >
-                  域名到期通知
+                  網域到期通知
                 </jet-nav-link>
               </div>
             </div>
@@ -117,14 +117,14 @@
 
                         <!-- Team Management -->
                         <div class="block px-4 py-2 text-xs text-gray-400">
-                          管理團隊
+                          管理專案
                         </div>
 
                         <jet-dropdown-link :href="route('teams.index')">
-                          團隊列表
+                          專案列表
                         </jet-dropdown-link>
                         <jet-dropdown-link :href="route('teams.create')">
-                          建立新團隊
+                          建立新專案
                         </jet-dropdown-link>
 
                         <div class="border-t border-gray-100"></div>
@@ -197,7 +197,7 @@
                       <template v-if="$page.props.jetstream.hasTeamFeatures">
                         <!-- Team Switcher -->
                         <div class="block px-4 py-2 text-xs text-gray-400">
-                          切換團隊
+                          切換專案
                         </div>
 
                         <template

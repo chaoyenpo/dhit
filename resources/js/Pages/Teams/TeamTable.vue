@@ -56,7 +56,7 @@
                     tracking-wider
                   "
                 >
-                  團隊名稱
+                  專案名稱
                 </th>
                 <th
                   scope="col"

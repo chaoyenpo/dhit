@@ -1,6 +1,6 @@
 <template>
   <jet-form-section @submitted="submit">
-    <template #title> 匯入域名與過期資訊 </template>
+    <template #title> 匯入網域與過期資訊 </template>
 
     <template #description>
       <div class="mt-6 text-gray-500">
@@ -19,7 +19,6 @@
 
     <template #form>
       <div class="col-span-6">
-
         <input
           type="file"
           ref="file"

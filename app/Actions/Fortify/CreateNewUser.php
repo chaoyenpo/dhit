@@ -30,23 +30,35 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return DB::transaction(function () use ($input) {
-            return tap(User::create([
+            $company = Company::create([
+                'name' => $input['company_name'],
+            ]);
+
+            return tap($company->users()->create([
                 'name' => $input['name'],
                 'email' => $input['email'],
-            ]), function (User $user) use ($input) {
+            ]), function (User $user) {
                 $user->assignRole('super_admin');
-                $this->createCompany($user, $input);
                 $this->createTeam($user);
             });
         });
     }
 
-    protected function createCompany(User $user, $input)
+    public function createMember(array $input)
     {
-        $user->company()->save(Company::forceCreate([
-            'owner_id' => $user->id,
-            'name' => $input['company_name'],
-        ]));
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        ])->validate();
+
+        return DB::transaction(function () use ($input) {
+            return tap(User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+            ]), function (User $user) use ($input) {
+                $this->createTeam($user);
+            });
+        });
     }
 
     /**
