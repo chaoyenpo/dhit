@@ -38,6 +38,9 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'flash' => $request->session()->all(),
+            'can' => [
+                'see_admin' => !!auth()->user()?->roles()->count()
+            ],
         ]);
     }
 }

@@ -54,7 +54,7 @@
                 <jet-dropdown
                   align="right"
                   width="60"
-                  v-if="$page.props.user.id === 1"
+                  v-if="$page.props.can.see_admin"
                 >
                   <template #trigger>
                     <span class="inline-flex rounded-md">

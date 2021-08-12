@@ -22,11 +22,8 @@
       </inertia-link>
 
       <div v-else class="flex items-center justify-end">
-        <a
-          :href="route('login.google')"
-          class="underline text-sm text-gray-600 hover:text-gray-900"
-        >
-          登入
+        <a :href="route('login.google')">
+          <jet-secondary-button type="button"> 登入 </jet-secondary-button>
         </a>
 
         <inertia-link :href="route('register')">
@@ -45,6 +42,7 @@
 
 <script>
 import JetButton from "@/Jetstream/Button";
+import JetSecondaryButton from "@/Jetstream/SecondaryButton";
 
 export default {
   props: {
@@ -55,6 +53,7 @@ export default {
   },
   components: {
     JetButton,
+    JetSecondaryButton,
   },
 };
 </script>

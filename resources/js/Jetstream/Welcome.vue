@@ -6,6 +6,8 @@
       <div class="mt-6 text-gray-500">
         目前團隊名稱<br />
         {{ $page.props.user.current_team.name }}
+
+        <pre>{{ JSON.stringify($page.props, null, "\t") }}</pre>
       </div>
     </div>
   </div>

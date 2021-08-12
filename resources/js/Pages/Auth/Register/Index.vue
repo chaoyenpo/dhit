@@ -7,15 +7,33 @@
     <jet-validation-errors class="mb-4" />
 
     <form @submit.prevent="submit">
-      <div>
-        <jet-label for="name" value="姓名" />
+      <p class="text-2xl text-gray-900">開始進行設定</p>
+
+      <p class="mt-4 text-lg text-gray-500">
+        這裡所使用的 Google 電子郵件地址將成為這個公司的管理員。未來您也將會使用
+        Google 帳號來登入此系。
+      </p>
+
+      <div class="mt-8">
+        <jet-label for="company_name" value="公司名稱" />
+        <jet-input
+          id="company_name"
+          type="text"
+          class="mt-1 block w-full"
+          v-model="form.company_name"
+          required
+          autofocus
+        />
+      </div>
+
+      <div class="mt-4">
+        <jet-label for="name" value="您的姓名" />
         <jet-input
           id="name"
           type="text"
           class="mt-1 block w-full"
           v-model="form.name"
           required
-          autofocus
           autocomplete="name"
         />
       </div>
@@ -39,7 +57,6 @@
           class="mt-1 block w-full"
           v-model="form.token"
           required
-          autocomplete="token"
         />
       </div>
 
@@ -135,6 +152,7 @@ export default {
   data() {
     return {
       form: this.$inertia.form({
+        company_name: "",
         name: "",
         email: "",
         password: "",
