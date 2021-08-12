@@ -52,7 +52,7 @@ class UserController extends Controller
 
     public function store(Request $request, CreatesNewUsers $creator)
     {
-        event(new Registered($creator->create([
+        event(new Registered($creator->createMember([
             'email' => $request->email,
             'name' => $request->name,
             'organization' => $request->organization,

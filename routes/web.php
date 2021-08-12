@@ -6,6 +6,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RoleAdminController;
 use App\Http\Controllers\DomainValidController;
 use App\Http\Controllers\WebhookReceiverController;
 
@@ -49,4 +50,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::post('/teams', [TeamController::class, 'store'])->name('teams.store');
+
+    Route::get('/roles/admin', [RoleAdminController::class, 'index'])->name('roles.admin.index');
 });

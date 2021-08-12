@@ -134,8 +134,9 @@
                           IAM
                         </div>
 
-                        <jet-dropdown-link>角色</jet-dropdown-link>
-                        <jet-dropdown-link>權限</jet-dropdown-link>
+                        <jet-dropdown-link :href="route('roles.admin.index')">
+                          角色
+                        </jet-dropdown-link>
                       </template>
                     </div>
                   </template>

@@ -52,7 +52,7 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return DB::transaction(function () use ($input) {
-            return tap(User::create([
+            return tap(auth()->user()->company->users()->create([
                 'name' => $input['name'],
                 'email' => $input['email'],
             ]), function (User $user) use ($input) {

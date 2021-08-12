@@ -4,7 +4,7 @@
       刪除
     </jet-button>
 
-    <pagination :links="$page.props.users.links" />
+    <pagination :links="$page.props.roles.links" />
   </div>
 
   <div class="flex flex-col">
@@ -42,7 +42,7 @@
                     tracking-wider
                   "
                 >
-                  名稱
+                  角色
                 </th>
                 <th
                   scope="col"
@@ -56,7 +56,7 @@
                     tracking-wider
                   "
                 >
-                  電子郵件
+                  角色說明
                 </th>
                 <th
                   scope="col"
@@ -70,15 +70,15 @@
                     tracking-wider
                   "
                 >
-                  狀態
+                  類型
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr
-                v-for="(user, userIndex) in $page.props.users.data"
-                :key="user.name"
-                :class="userIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+                v-for="(role, roleIndex) in $page.props.roles.data"
+                :key="role.name"
+                :class="roleIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
               >
                 <td
                   class="
@@ -91,7 +91,7 @@
                   "
                 >
                   <jet-checkbox
-                    :value="user.id"
+                    :value="role.id"
                     v-model:checked="form.selected"
                   />
                 </td>
@@ -105,7 +105,7 @@
                     text-gray-900
                   "
                 >
-                  {{ user.name }}
+                  {{ role.name }}
                 </td>
                 <td
                   class="
@@ -117,7 +117,7 @@
                     text-gray-900
                   "
                 >
-                  {{ user.email }}
+                  {{ role.description }}
                 </td>
                 <td
                   class="
@@ -129,7 +129,7 @@
                     text-gray-900
                   "
                 >
-                  有效
+                  {{ role.type }}
                 </td>
               </tr>
             </tbody>
@@ -154,15 +154,15 @@ export default {
   computed: {
     selectAll: {
       get: function () {
-        return this.$page.props.users.data
-          ? this.form.selected.length == this.$page.props.users.data.length
+        return this.$page.props.roles.data
+          ? this.form.selected.length == this.$page.props.roles.data.length
           : false;
       },
       set: function (value) {
         var selected = [];
 
         if (value) {
-          this.$page.props.users.data.forEach(function (user) {
+          this.$page.props.roles.data.forEach(function (user) {
             selected.push(user.id);
           });
         }
