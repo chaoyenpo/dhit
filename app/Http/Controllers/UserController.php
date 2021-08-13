@@ -23,24 +23,13 @@ class UserController extends Controller
     }
 
 
-    public function show(Request $request, $teamId)
+    public function show(Request $request, $userId)
     {
-        // $team = Jetstream::newTeamModel()->findOrFail($teamId);
+        $user = User::findOrFail($userId);
 
-        // Gate::authorize('view', $team);
-
-        // return Jetstream::inertia()->render($request, 'Teams/Show', [
-        //     'team' => $team->load('owner', 'users', 'teamInvitations'),
-        //     'availableRoles' => array_values(Jetstream::$roles),
-        //     'availablePermissions' => Jetstream::$permissions,
-        //     'defaultPermissions' => Jetstream::$defaultPermissions,
-        //     'permissions' => [
-        //         'canAddTeamMembers' => Gate::check('addTeamMember', $team),
-        //         'canDeleteTeam' => Gate::check('delete', $team),
-        //         'canRemoveTeamMembers' => Gate::check('removeTeamMember', $team),
-        //         'canUpdateTeam' => Gate::check('update', $team),
-        //     ],
-        // ]);
+        return Inertia::render('User/Show', [
+            'selectedUser' => $user,
+        ]);
     }
 
     public function create(Request $request)

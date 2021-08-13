@@ -15,6 +15,7 @@ class AddCompanyIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('company_id')->nullable()->after('remember_token');
+            $table->boolean('root_user')->default(false)->after('email');
         });
     }
 

@@ -133,7 +133,7 @@
                 >
                   <inertia-link :href="route('teams.show', user)">
                     <button
-                      class="cursor-pointer text-sm text-gray-400 underline"
+                      class="cursor-pointer text-sm text-blue-400 underline"
                     >
                       {{ user.name }}
                     </button>

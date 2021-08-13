@@ -23,6 +23,8 @@ class User extends Authenticatable
     use HasTeams;
     use HasRoles;
 
+    protected $with = ['roles'];
+
     /**
      * The attributes that are mass assignable.
      *

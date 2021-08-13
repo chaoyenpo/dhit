@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/admin', [AdminController::class, 'show'])->name('admin');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
 

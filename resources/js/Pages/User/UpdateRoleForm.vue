@@ -1,46 +1,13 @@
 <template>
   <jet-form-section @submitted="updateTeamName">
-    <template #title> 專案名稱 </template>
+    <template #title> 管理員角色 </template>
 
-    <template #description> 顯示專案名稱和一些資訊。 </template>
+    <template #description> 可以指派使用者成為管理員。 {{ user }}</template>
 
     <template #form>
-      <!-- Team Owner Information -->
-      <div class="hidden col-span-6">
-        <jet-label value="Team Owner" />
-
-        <div class="flex items-center mt-2">
-          <img
-            class="w-12 h-12 rounded-full object-cover"
-            :src="team.owner.profile_photo_url"
-            :alt="team.owner.name"
-          />
-
-          <div class="ml-4 leading-tight">
-            <div>{{ team.owner.name }}</div>
-            <div class="text-gray-700 text-sm">{{ team.owner.email }}</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Team Name -->
-      <div class="col-span-6 sm:col-span-4">
-        <jet-label for="name" value="專案名稱" />
-
-        <jet-input
-          id="name"
-          type="text"
-          class="mt-1 block w-full"
-          v-model="form.name"
-          :disabled="!permissions.canUpdateTeam"
-        />
-
-        <jet-input-error :message="form.errors.name" class="mt-2" />
-      </div>
-
       <!-- Token Permissions -->
       <div class="col-span-6" v-if="availablePermissions.length > 0">
-        <jet-label for="permissions" value="功能" />
+        <jet-label for="permissions" value="角色" />
 
         <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
@@ -61,7 +28,7 @@
       </div>
     </template>
 
-    <template #actions v-if="permissions.canUpdateTeam">
+    <template #actions>
       <jet-action-message :on="form.recentlySuccessful" class="mr-3">
         已儲存。
       </jet-action-message>
@@ -96,22 +63,25 @@ export default {
     JetCheckbox,
   },
 
-  props: ["team", "permissions"],
+  props: ["user", "permissions"],
 
   data() {
     return {
       form: this.$inertia.form({
-        name: this.team.name,
-        permissions: this.team.features,
+        permissions: this.user.roles,
       }),
       availablePermissions: [
         {
-          name: "Webhook 接收器",
-          slug: "webhook_receiver",
+          name: "超級管理員",
+          slug: "super_admin",
         },
         {
-          name: "網域通知服務",
-          slug: "domain_notify",
+          name: "使用者管理員",
+          slug: "user_management_admin",
+        },
+        {
+          name: "專案管理員",
+          slug: "team_management_admin",
         },
       ],
     };

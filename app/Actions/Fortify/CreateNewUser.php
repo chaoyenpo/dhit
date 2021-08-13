@@ -37,6 +37,7 @@ class CreateNewUser implements CreatesNewUsers
             return tap($company->users()->create([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                'root_user' => true,
             ]), function (User $user) {
                 $user->assignRole('super_admin');
                 $this->createTeam($user);

@@ -8,21 +8,23 @@
 
     <div>
       <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-        <update-team-name-form :team="team" :permissions="permissions" />
+        <update-profile-information-form :user="selectedUser" />
 
-        <team-member-manager
+        <update-role-form class="mt-10" :user="selectedUser" />
+
+        <!-- <team-member-manager
           class="mt-10 sm:mt-0"
           :team="team"
           :available-roles="availableRoles"
           :user-permissions="permissions"
-        />
+        /> -->
 
         <template
           v-if="fasle && permissions.canDeleteTeam && !team.personal_team"
         >
           <jet-section-border />
 
-          <delete-team-form class="mt-10 sm:mt-0" :team="team" />
+          <!-- <delete-team-form class="mt-10 sm:mt-0" :team="team" /> -->
         </template>
       </div>
     </div>
@@ -34,17 +36,19 @@ import TeamMemberManager from "./TeamMemberManager";
 import AppLayout from "@/Layouts/AppLayout";
 import DeleteTeamForm from "./DeleteTeamForm";
 import JetSectionBorder from "@/Jetstream/SectionBorder";
-import UpdateTeamNameForm from "./UpdateTeamNameForm";
+import UpdateProfileInformationForm from "./UpdateProfileInformationForm";
+import UpdateRoleForm from "./UpdateRoleForm";
 
 export default {
-  props: ["team", "availableRoles", "permissions"],
+  props: ["selectedUser"],
 
   components: {
     AppLayout,
     DeleteTeamForm,
     JetSectionBorder,
     TeamMemberManager,
-    UpdateTeamNameForm,
+    UpdateProfileInformationForm,
+    UpdateRoleForm,
   },
 };
 </script>

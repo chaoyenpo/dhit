@@ -105,7 +105,13 @@
                     text-gray-900
                   "
                 >
-                  {{ user.name }}
+                  <inertia-link :href="route('users.show', user)">
+                    <button
+                      class="cursor-pointer text-sm text-blue-400 underline"
+                    >
+                      {{ user.name }}
+                    </button>
+                  </inertia-link>
                 </td>
                 <td
                   class="
