@@ -20,7 +20,6 @@ class DomainImport implements ToModel, WithHeadingRow
             'team_id' => auth()->user()->currentTeam->id,
             'name' => $row['網域名稱'],
         ], [
-            'tag' => $row['標籤'],
             'domain_expired_at' => Date::excelToDateTimeObject($row['域名到期時間']),
             'certificate_expired_at' => $row['憑證到期時間'] ? Date::excelToDateTimeObject($row['憑證到期時間']) : null,
             'product' => $row['產品'],

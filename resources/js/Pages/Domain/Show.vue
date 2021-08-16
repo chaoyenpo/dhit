@@ -71,23 +71,21 @@ export default {
 
   methods: {
     connectTelegramGroup() {
-      this.form.post(route("domains.link"), {
-        preserveScroll: true,
-        errorBag: "botLink",
-        onStart: () => (this.processing = true),
-        onSuccess: this.link,
-      });
+      if (window.tgWindow) {
+        window.tgWindow.close();
+        window.tgWindow = null;
+      }
+      window.tgWindow = window.open();
+      window.axios.get("api/botLink").then(this.link);
     },
 
-    link() {
-      const tgWindow = window.open();
+    link(res) {
+      window.tgWindow.location.href = res.data.url;
 
-      tgWindow.location.href = this.$page.props.flash.url;
-
-      Echo.private(`webhook.receiver.${this.$page.props.flash.token}`).listen(
+      Echo.private(`webhook.receiver.${res.data.token}`).listen(
         "TelegramConnected",
         (e) => {
-          tgWindow.close();
+          window.tgWindow.close();
 
           this.$inertia.get(route("domains"));
         }

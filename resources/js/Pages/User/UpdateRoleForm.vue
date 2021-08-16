@@ -2,7 +2,7 @@
   <jet-form-section @submitted="updateTeamName">
     <template #title> 管理員角色 </template>
 
-    <template #description> 可以指派使用者成為管理員。 {{ user }}</template>
+    <template #description> 可以指派使用者成為管理員。 </template>
 
     <template #form>
       <!-- Token Permissions -->

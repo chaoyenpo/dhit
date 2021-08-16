@@ -11,7 +11,7 @@
 
       <p class="mt-4 text-lg text-gray-500">
         這裡所使用的 Google 電子郵件地址將成為這個公司的管理員。未來您也將會使用
-        Google 帳號來登入此系。
+        Google 帳號來登入此系統。
       </p>
 
       <div class="mt-8">

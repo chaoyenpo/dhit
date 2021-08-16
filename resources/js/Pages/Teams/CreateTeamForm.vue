@@ -45,7 +45,7 @@
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
       >
-        Create
+        建立
       </jet-button>
     </template>
   </jet-form-section>

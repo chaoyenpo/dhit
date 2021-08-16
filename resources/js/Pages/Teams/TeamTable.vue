@@ -84,7 +84,7 @@
                     tracking-wider
                   "
                 >
-                  權限
+                  功能
                 </th>
               </tr>
             </thead>
