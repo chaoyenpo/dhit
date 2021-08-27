@@ -56,20 +56,6 @@
                     tracking-wider
                   "
                 >
-                  標籤
-                </th>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
-                >
                   域名到期時間
                 </th>
                 <th
@@ -204,9 +190,6 @@
                   "
                 >
                   {{ domain.name }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{ domain.tag }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ domain.domain_expired_at }}

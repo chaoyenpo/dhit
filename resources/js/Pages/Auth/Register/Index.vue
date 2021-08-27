@@ -50,12 +50,12 @@
       </div>
 
       <div class="mt-4">
-        <jet-label for="token" value="邀請碼" />
+        <jet-label for="code" value="邀請碼" />
         <jet-input
-          id="token"
+          id="code"
           type="text"
           class="mt-1 block w-full"
-          v-model="form.token"
+          v-model="form.code"
           required
         />
       </div>
@@ -155,6 +155,7 @@ export default {
         company_name: "",
         name: "",
         email: "",
+        code: "",
         password: "",
         password_confirmation: "",
         terms: false,

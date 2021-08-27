@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\InvitationCode;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +28,10 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'company_name' => ['required', 'string', 'max:255'],
+            'code' => ['required', 'string', 'max:255'],
         ])->validate();
+
+        $invitationCode = InvitationCode::whereCode($input['code']);
 
         return DB::transaction(function () use ($input) {
             $company = Company::create([

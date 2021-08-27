@@ -1,10 +1,14 @@
 <?php
 
+use Inertia\Inertia;
+use App\Models\Domain;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use Rap2hpoutre\FastExcel\Facades\FastExcel;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleAdminController;
 use App\Http\Controllers\DomainValidController;
@@ -21,7 +25,32 @@ use App\Http\Controllers\WebhookReceiverController;
 |
  */
 
-Route::get('/', [DashboardController::class, 'welcome']);
+Route::get('/', [DashboardController::class, 'welcome'])->name('welcome');
+
+Route::get('/fish', function () {
+    function domainsGenerator()
+    {
+        foreach (Domain::cursor() as $domain) {
+            yield $domain;
+        }
+    }
+
+    FastExcel::data(domainsGenerator())->export('file.csv', function ($domain) {
+        return [
+            '網域名稱' => $domain->name,
+            '域名到期時間' => $domain->domain_expired_at->format('Y/m/d'),
+            '憑證到期時間' => $domain->certificate_expired_at ? $domain->certificate_expired_at->format('Y/m/d') : '',
+            '產品' => $domain->product,
+            '提交者' => $domain->submit,
+            'DNS' => $domain->dns,
+            '名稱伺服器' => implode(',', $domain->nameservers),
+            '域名商' => $domain->vendor,
+            '備註' => $domain->remark,
+        ];
+    });
+
+    return Inertia::render('Dashboard');
+});
 
 Route::get('/auth/redirect', [AuthController::class, 'redirect'])->name('login.google');
 Route::get('/auth/callback', [AuthController::class, 'callback']);

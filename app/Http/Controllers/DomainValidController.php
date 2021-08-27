@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bot;
-use App\Models\BotNotify;
 use Inertia\Inertia;
+use App\Excel\Import;
 use ReflectionMethod;
 use App\Models\Domain;
+use App\Models\BotNotify;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Imports\DomainImport;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use NotificationChannels\Telegram\Telegram;
+use Rap2hpoutre\FastExcel\Facades\FastExcel;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Domain as DomainResource;
 
@@ -36,7 +40,7 @@ class DomainValidController extends Controller
             'domains' => ['required', 'file'],
         ])->validateWithBag('uploadDomain');
 
-        $data = Excel::import(new DomainImport, $request->file('domains'));
+        Import::import($request->file('domains'));
 
         return back();
     }
@@ -90,29 +94,5 @@ class DomainValidController extends Controller
             'url' => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
             'token' => $token,
         ]);
-    }
-
-    private function csv_to_array($filename, $delimiter = ',')
-    {
-        if (!file_exists($filename) || !is_readable($filename))
-            return false;
-
-        if ($delimiter == ',') {
-            $csv = array_map('str_getcsv', file($filename));
-        } else {
-            $lines = file($filename);
-            $line_num = count($lines);
-            $dm = []; // $delimiter
-
-            $csv = array_map('str_getcsv', $lines, array_pad($dm, $line_num, $delimiter));
-        }
-
-        array_walk($csv, function (&$row) use ($csv) {
-            $row = array_combine($csv[0], $row);
-        });
-
-        array_shift($csv); // 移掉第一行的標題陣列
-
-        return $csv;
     }
 }
