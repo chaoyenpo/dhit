@@ -4,20 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Bot;
 use Inertia\Inertia;
-use App\Excel\Import;
 use ReflectionMethod;
 use App\Models\Domain;
 use App\Models\BotNotify;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Imports\DomainImport;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
+use Facades\App\Services\Excel\Excel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 use NotificationChannels\Telegram\Telegram;
-use Rap2hpoutre\FastExcel\Facades\FastExcel;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Domain as DomainResource;
 
@@ -40,7 +35,9 @@ class DomainValidController extends Controller
             'domains' => ['required', 'file'],
         ])->validateWithBag('uploadDomain');
 
-        Import::import($request->file('domains'));
+        $result = Excel::import($request->file('domains'));
+
+        dd($result);
 
         return back();
     }
