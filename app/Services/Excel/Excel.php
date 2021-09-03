@@ -32,38 +32,37 @@ class Excel
         return 1000;
     }
 
-    public function import($file)
+    public function import($file, $teamId)
     {
-        return '成功';
-        // FastExcel::import($file, function ($line) {
-        //     self::add([
-        //         'team_id' => auth()->user()->currentTeam->id,
-        //         'name' => $line['網域名稱'],
-        //         'domain_expired_at' => $line['域名到期時間'],
-        //         'certificate_expired_at' => $line['憑證到期時間'] ?: null,
-        //         'product' => $line['產品'],
-        //         'submit' => $line['提交者'],
-        //         'dns' => $line['DNS'],
-        //         'nameservers' => explode(",", $line['名稱伺服器']),
-        //         'vendor' => $line['域名商'],
-        //         'remark' => $line['備註'],
-        //     ]);
+        FastExcel::import($file, function ($line) use ($teamId) {
+            $this->add([
+                'team_id' => $teamId,
+                'name' => $line['網域名稱'],
+                'domain_expired_at' => $line['域名到期時間'],
+                'certificate_expired_at' => $line['憑證到期時間'] ?: null,
+                'product' => $line['產品'],
+                'submit' => $line['提交者'],
+                'dns' => $line['DNS'],
+                'nameservers' => json_encode(explode(",", $line['名稱伺服器'])),
+                'vendor' => $line['域名商'],
+                'remark' => $line['備註'],
+            ]);
 
-        //     if (count(self::$rows) === self::chunkSize()) {
-        //         Domain::upsert(
-        //             self::$rows,
-        //             ['team_id', 'name'],
-        //         );
+            if (count($this->rows) === $this->chunkSize()) {
+                Domain::upsert(
+                    $this->rows,
+                    $this->uniqueBy(),
+                );
 
-        //         self::$rows = [];
-        //     }
-        // });
+                $this->rows = [];
+            }
+        });
 
-        // if (!empty(self::$rows)) {
-        //     Domain::upsert(
-        //         self::$rows,
-        //         self::uniqueBy(),
-        //     );
-        // }
+        if (!empty($this->rows)) {
+            Domain::upsert(
+                $this->rows,
+                $this->uniqueBy(),
+            );
+        }
     }
 }

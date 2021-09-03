@@ -9,12 +9,12 @@ use App\Models\Domain;
 use App\Models\BotNotify;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Facades\App\Services\Excel\Excel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Domain as DomainResource;
+use App\Jobs\ImportExcel;
 
 class DomainValidController extends Controller
 {
@@ -35,9 +35,9 @@ class DomainValidController extends Controller
             'domains' => ['required', 'file'],
         ])->validateWithBag('uploadDomain');
 
-        $result = Excel::import($request->file('domains'));
+        $path = $request->file('domains')->store('domains');
 
-        dd($result);
+        ImportExcel::dispatch($path, auth()->user()->currentTeam->id);
 
         return back();
     }
