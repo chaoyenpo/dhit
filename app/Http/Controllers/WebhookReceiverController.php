@@ -23,7 +23,7 @@ class WebhookReceiverController extends Controller
     public function show(Request $request)
     {
         $webhookReceivers = WebhookReceiver::with(['bot', 'user'])->whereTeamId($request->user()->currentTeam->id)
-            ->whereUserId($request->user()->id)->orderBy('created_at', 'desc')->get();
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Webhook/Show', [
             'webhookReceivers' => ResourcesWebhookReceiver::collection($webhookReceivers),
@@ -33,47 +33,6 @@ class WebhookReceiverController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Webhook/Create');
-    }
-
-    public function store(Request $request)
-    {
-        Validator::make($request->all(), [
-            'bot_token' => ['required', 'string'],
-        ])->validateWithBag('botLink');
-
-        try {
-            $r = new ReflectionMethod(Telegram::class, 'sendRequest');
-            $r->setAccessible(true);
-            $response = $r->invoke(new Telegram($request->bot_token), "getMe", []);
-
-            $result = (json_decode($response->getBody(), true) ?? [])['result'];
-
-            $r->invoke(new Telegram($request->bot_token), "setWebhook", [
-                'url' => config('receiver.host') . '/api/webhook/telegram',
-            ]);
-
-            $bot = Bot::updateOrCreate([
-                'token' => $request->bot_token,
-            ], [
-                'name' => $result['first_name'],
-                'username' => $result['username'],
-                'meta' => $result,
-            ]);
-        } catch (\Throwable $th) {
-            throw ValidationException::withMessages(['bot_token' => 'Token 無效。' . $th->getMessage()])->errorBag('botLink');
-        }
-
-        $token = Str::random(32);
-        Cache::put(
-            $token,
-            auth()->user()->id . ' ' . auth()->user()->currentTeam->id . ' ' . $bot->id,
-            3600
-        );
-
-        return back()->with([
-            'url' => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
-            'token' => $token,
-        ]);
     }
 
     public function relink(Request $request)

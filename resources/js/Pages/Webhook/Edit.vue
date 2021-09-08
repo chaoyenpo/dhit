@@ -8,29 +8,26 @@
 
     <div>
       <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-        <jet-section-title>
-          <template #title>
-            Webhook 接收器設定說明
-          </template>
+        <!-- <jet-section-title>
+          <template #title> Webhook 接收器設定說明 </template>
           <template #description>
-            我們將引導您完成配置傳入 Webhook 接收器所需的步驟，以便您可以開始接收資料。
+            我們將引導您完成配置傳入 Webhook
+            接收器所需的步驟，以便您可以開始接收資料。
           </template>
         </jet-section-title>
 
-        <jet-section-border />
+        <jet-section-border /> -->
 
         <div class="mt-10 sm:mt-0">
           <jet-action-section>
-            <template #title>
-              Webhook URL
-            </template>
+            <template #title> Webhook URL </template>
 
             <template #description>
               發送你的 JSON payloads 到這個 URL。
             </template>
 
             <template #content>
-              {{$page.props.webhookReceiver.uri}}
+              {{ $page.props.webhookReceiver.uri }}
 
               <div class="mt-5">
                 <jet-button
@@ -38,7 +35,7 @@
                   v-clipboard="$page.props.webhookReceiver.uri"
                   v-clipboard:success="onSuccess"
                 >
-                  {{copyLabel}}
+                  {{ copyLabel }}
                 </jet-button>
               </div>
             </template>
@@ -46,27 +43,25 @@
 
           <jet-section-border />
 
-          <update-message-format-form :webhookReceiver="$page.props.webhookReceiver" />
+          <update-message-format-form
+            :webhookReceiver="$page.props.webhookReceiver"
+          />
 
           <jet-section-border />
 
           <jet-action-section>
-            <template #title>
-              發送到群組
-            </template>
+            <template #title> 發送到群組 </template>
 
             <template #description>
-              當 Webhook 接收器收到傳進來的訊息時，會將訊息發送到這個指定的群組中。
+              當 Webhook
+              接收器收到傳進來的訊息時，會將訊息發送到這個指定的群組中。
             </template>
 
             <template #content>
-              {{$page.props.webhookReceiver.chat.title}}
+              {{ $page.props.webhookReceiver.chat.title }}
 
               <div class="mt-5">
-                <jet-button
-                  type="button"
-                  @click="reconnectWebhookReceiver"
-                >
+                <jet-button type="button" @click="connectTelegramGroup">
                   重新連結到其他群組
                 </jet-button>
               </div>
@@ -76,19 +71,17 @@
           <jet-section-border />
 
           <jet-action-section>
-            <template #title>
-              Bot 資訊
-            </template>
+            <template #title> Bot 資訊 </template>
 
             <template #content>
-              {{$page.props.webhookReceiver.bot.name}}
-              <br>
+              {{ $page.props.webhookReceiver.bot.name }}
+              <br />
               <a
                 class="font-medium text-gray-800 hover:text-gray-700"
                 target="_blank"
                 :href="`https://t.me/${$page.props.webhookReceiver.bot.username}`"
               >
-                @{{$page.props.webhookReceiver.bot.username}}
+                @{{ $page.props.webhookReceiver.bot.username }}
               </a>
             </template>
           </jet-action-section>
@@ -155,27 +148,29 @@ export default {
   },
 
   methods: {
-    reconnectWebhookReceiver() {
-      this.$inertia.post(
-        route("webhooks.relink"),
-        { id: this.webhookReceiver.id },
-        {
-          preserveScroll: true,
-          onSuccess: this.link,
-          errorBag: "botLink",
-        }
-      );
+    connectTelegramGroup() {
+      if (window.tgWindow) {
+        window.tgWindow.close();
+        window.tgWindow = null;
+      }
+      window.tgWindow = window.open();
+      window.axios
+        .get("../api/reCustomBotLink", {
+          params: {
+            id: this.webhookReceiver.id,
+          },
+        })
+        .then(this.link);
     },
 
-    link() {
-      const tgWindow = window.open();
+    link(res) {
+      this.errors = {};
+      window.tgWindow.location.href = res.data.url;
 
-      tgWindow.location.href = this.$page.props.flash.url;
-
-      Echo.private(`webhook.receiver.${this.$page.props.flash.token}`).listen(
+      Echo.private(`webhook.receiver.${res.data.token}`).listen(
         "TelegramConnected",
         (e) => {
-          tgWindow.close();
+          window.tgWindow.close();
 
           this.$inertia.get(route("webhooks.edit"), {
             id: e.id,

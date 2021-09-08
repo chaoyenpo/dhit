@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/botLink', [TelegramBotController::class, 'link']);
+    Route::get('/customBotLink', [TelegramBotController::class, 'customLink']);
+    Route::get('/reCustomBotLink', [TelegramBotController::class, 'reCustomLink']);
 });
 
 Route::post('/webhook/telegram', [TelegramBotController::class, 'callback']);

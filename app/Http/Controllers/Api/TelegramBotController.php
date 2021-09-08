@@ -12,6 +12,7 @@ use App\Events\TelegramConnected;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use App\Notifications\TelegramBotConnected;
 use NotificationChannels\Telegram\Telegram;
 use Illuminate\Support\Facades\Notification;
@@ -132,6 +133,69 @@ class TelegramBotController extends Controller
         return response()->json([
             'url' => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
             'token' => $token,
+        ]);
+    }
+
+    public function customLink(Request $request)
+    {
+        Validator::make($request->all(), [
+            'bot_token' => ['required', 'string'],
+        ])->validateWithBag('botLink');
+
+        try {
+            $r = new ReflectionMethod(Telegram::class, 'sendRequest');
+            $r->setAccessible(true);
+            $response = $r->invoke(new Telegram($request->bot_token), "getMe", []);
+
+            $result = (json_decode($response->getBody(), true) ?? [])['result'];
+
+            $r->invoke(new Telegram($request->bot_token), "setWebhook", [
+                'url' => config('receiver.host') . '/api/webhook/telegram',
+            ]);
+
+            $bot = Bot::updateOrCreate([
+                'token' => $request->bot_token,
+                'type' => Bot::TYPE_RECEIVER,
+                'team_id' => auth()->user()->currentTeam->id,
+            ], [
+                'name' => $result['first_name'],
+                'username' => $result['username'],
+                'meta' => $result,
+            ]);
+        } catch (\Throwable $th) {
+            throw ValidationException::withMessages(['bot_token' => '請確認 Bot Token 是否有誤。' . $th->getMessage()])->errorBag('botLink');
+        }
+
+        $token = Str::random(32);
+        Cache::put(
+            $token,
+            auth()->user()->id . ' ' . auth()->user()->currentTeam->id . ' ' . $bot->id,
+            3600
+        );
+
+        return response()->json([
+            'url' => 'https://t.me/' . $result['username'] . '?startgroup=' . $token,
+            'token' => $token,
+        ]);
+    }
+
+    public function reCustomLink(Request $request)
+    {
+        Validator::make($request->all(), [
+            'id' => ['required'],
+        ])->validateWithBag('botLink');
+
+        $webhookReceiver = WebhookReceiver::with('bot')->find($request->id);
+
+        Cache::put(
+            $webhookReceiver->token,
+            auth()->user()->id . ' ' . auth()->user()->currentTeam->id . ' ' . $webhookReceiver->bot->id,
+            3600
+        );
+
+        return response()->json([
+            'url' => 'https://t.me/' . $webhookReceiver->bot->username . '?startgroup=' . $webhookReceiver->token,
+            'token' => $webhookReceiver->token,
         ]);
     }
 }
