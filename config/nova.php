@@ -98,7 +98,7 @@ return [
     */
 
     'middleware' => [
-        'web',
+        'nova-web',
         Authenticate::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
