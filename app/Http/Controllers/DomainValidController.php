@@ -20,7 +20,7 @@ class DomainValidController extends Controller
 {
     public function show(Request $request)
     {
-        $domains = Domain::whereTeamId($request->user()->currentTeam->id)->paginate(100);
+        $domains = Domain::whereTeamId($request->user()->currentTeam->id)->paginate(25);
         $bot = BotNotify::whereTeamId($request->user()->currentTeam->id)->first();
 
         return Inertia::render('Domain/Show', [

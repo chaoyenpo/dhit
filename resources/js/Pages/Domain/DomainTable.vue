@@ -7,7 +7,37 @@
     <pagination :links="$page.props.domains.links" />
   </div>
 
-  <div class="mb-5 px-6 py-3 text-gray-500 bg-white sm:rounded-lg">搜尋區</div>
+  <div class="mb-5 relative w-72">
+    <div
+      class="
+        absolute
+        inset-y-0
+        left-0
+        pl-3
+        flex
+        items-center
+        pointer-events-none
+      "
+    >
+      <search-icon class="h-7 w-7 text-gray-400" aria-hidden="true" />
+    </div>
+
+    <jet-input
+      id="search"
+      type="text"
+      class="pl-11 block rounded-full w-full"
+      placeholder="搜尋"
+    />
+
+    <!--
+    <input
+      type="text"
+      name="email"
+      id="email"
+      class="block pl-11 sm:text-sm border-gray-300 rounded-full"
+      placeholder="you@example.com"
+    /> -->
+  </div>
 
   <div class="flex flex-col">
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -235,12 +265,16 @@
 import Pagination from "@/Components/Pagination";
 import JetCheckbox from "@/Jetstream/Checkbox";
 import JetButton from "@/Jetstream/Button";
+import JetInput from "@/Jetstream/Input";
+import { SearchIcon } from "@heroicons/vue/outline";
 
 export default {
   components: {
     JetCheckbox,
     JetButton,
+    JetInput,
     Pagination,
+    SearchIcon,
   },
   computed: {
     selectAll: {
