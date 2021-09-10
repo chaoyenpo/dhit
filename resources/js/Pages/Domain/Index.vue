@@ -30,11 +30,9 @@
 
         <upload-domain-form />
 
-        <div v-if="$page.props.domains?.data?.length > 0">
-          <jet-section-border />
+        <jet-section-border />
 
-          <domain-table />
-        </div>
+        <domain-table />
       </div>
     </div>
   </app-layout>
