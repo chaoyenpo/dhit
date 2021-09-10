@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\User as ResourcesUser;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class UserController extends Controller
@@ -50,5 +51,18 @@ class UserController extends Controller
         return back()->with('flash', [
             'banner' => '使用者 ' . $request->name . ' 新增成功！'
         ]);
+    }
+
+    public function update(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        Validator::make($request->all(), [
+            'permissions' => ['array'],
+        ])->validateWithBag('updateTeamName');
+
+        $user->syncRoles($request['permissions']);
+
+        return back(303);
     }
 }

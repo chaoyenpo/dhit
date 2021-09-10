@@ -16,6 +16,7 @@
           >
             <label class="flex items-center">
               <jet-checkbox
+                :disabled="user.root_user"
                 :value="permission.slug"
                 v-model:checked="form.permissions"
               />
@@ -68,7 +69,7 @@ export default {
   data() {
     return {
       form: this.$inertia.form({
-        permissions: this.user.roles,
+        permissions: this.user.roles.map((o) => o.name),
       }),
       availablePermissions: [
         {
@@ -89,7 +90,7 @@ export default {
 
   methods: {
     updateTeamName() {
-      this.form.put(route("teams.update", this.team), {
+      this.form.put(route("users.update", this.user), {
         errorBag: "updateTeamName",
         preserveScroll: true,
       });

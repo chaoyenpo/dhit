@@ -3,8 +3,18 @@
     type="checkbox"
     :value="value"
     v-model="proxyChecked"
-    class="w-6 h-6 rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-  >
+    class="
+      w-6
+      h-6
+      rounded
+      border-gray-300
+      text-indigo-600
+      shadow-sm
+      focus:border-indigo-300
+      focus:ring focus:ring-indigo-200 focus:ring-opacity-50
+      disabled:opacity-50
+    "
+  />
 </template>
 
 <script>

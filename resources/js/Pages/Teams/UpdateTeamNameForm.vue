@@ -47,6 +47,8 @@
             v-for="permission in availablePermissions"
             :key="permission.slug"
           >
+            {{ permission.slug }}
+            {{ form.permissions }}
             <label class="flex items-center">
               <jet-checkbox
                 :value="permission.slug"
