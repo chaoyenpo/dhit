@@ -14,6 +14,7 @@ class CreateDomainsTable extends Migration
     public function up()
     {
         Schema::create('domains', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('team_id');
             $table->string('name');
             $table->string('tag')->nullable();
@@ -21,7 +22,7 @@ class CreateDomainsTable extends Migration
             $table->text('remark')->nullable();
             $table->timestamps();
 
-            $table->primary(['team_id', 'name']);
+            $table->unique(['team_id', 'name']);
         });
     }
 
