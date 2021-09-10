@@ -4,8 +4,9 @@ namespace App\Providers;
 
 use App\Services\Excel\Excel;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class ExcelServiceProvider extends ServiceProvider
+class ExcelServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register services.
@@ -14,7 +15,13 @@ class ExcelServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('excel', function ($app, $data = null) {
+            if (is_array($data)) {
+                $data = collect($data);
+            }
+
+            return new Excel($data);
+        });
     }
 
     /**
@@ -24,12 +31,11 @@ class ExcelServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind('excel', function ($app, $data = null) {
-            if (is_array($data)) {
-                $data = collect($data);
-            }
+        //
+    }
 
-            return new Excel($data);
-        });
+    public function provides()
+    {
+        return [Excel::class];
     }
 }
