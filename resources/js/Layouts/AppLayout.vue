@@ -40,8 +40,8 @@
                 class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
               >
                 <jet-nav-link
-                  :href="route('domains')"
-                  :active="route().current('domains')"
+                  :href="route('domains.index')"
+                  :active="route().current('domains.index')"
                 >
                   網域到期通知
                 </jet-nav-link>

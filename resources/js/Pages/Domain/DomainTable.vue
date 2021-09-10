@@ -24,9 +24,15 @@
 
     <jet-input
       id="search"
-      type="text"
+      data-testid="search-input"
+      dusk="search"
+      type="search"
       class="pl-11 block rounded-full w-full"
+      v-model="search"
+      @keydown.stop="performSearch"
+      @search="performSearch"
       placeholder="搜尋"
+      spellcheck="false"
     />
 
     <!--
@@ -267,6 +273,7 @@ import JetCheckbox from "@/Jetstream/Checkbox";
 import JetButton from "@/Jetstream/Button";
 import JetInput from "@/Jetstream/Input";
 import { SearchIcon } from "@heroicons/vue/outline";
+import defaults from "lodash/defaults";
 
 export default {
   components: {
@@ -298,10 +305,16 @@ export default {
   },
   data() {
     return {
+      debouncer: null,
       form: this.$inertia.form({
         selected: [],
       }),
+      search: "",
     };
+  },
+
+  created() {
+    this.debouncer = _.debounce((callback) => callback(), 500);
   },
 
   methods: {
@@ -312,6 +325,26 @@ export default {
         onSuccess: () => {
           this.form.selected = [];
         },
+      });
+    },
+
+    performSearch(event) {
+      this.debouncer(() => {
+        // Only search if we're not tabbing into the field
+        if (event.which != 9) {
+          this.updateQueryString({
+            search: this.search,
+          });
+        }
+      });
+    },
+
+    updateQueryString(value) {
+      //   defaults(value, route().params);
+
+      this.$inertia.get(route("domains.index"), defaults(value, { page: 1 }), {
+        preserveState: true,
+        preserveScroll: true,
       });
     },
   },

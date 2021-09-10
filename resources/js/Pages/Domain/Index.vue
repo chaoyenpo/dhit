@@ -87,7 +87,7 @@ export default {
         (e) => {
           window.tgWindow.close();
 
-          this.$inertia.get(route("domains"));
+          this.$inertia.get(route("domains.index"));
         }
       );
     },

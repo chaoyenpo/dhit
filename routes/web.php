@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::put('/webhooks/{webhookReceiver}', [WebhookReceiverController::class, 'update'])->name('webhooks.update');
     Route::delete('/webhooks/{webhookReceiver}', [WebhookReceiverController::class, 'destroy'])->name('webhooks.destroy');
 
-    Route::get('/domains', [DomainValidController::class, 'show'])->name('domains');
+    Route::get('/domains', [DomainValidController::class, 'index'])->name('domains.index');
     Route::post('/domains', [DomainValidController::class, 'store'])->name('domains.store');
     Route::delete('/domains', [DomainValidController::class, 'destroy'])->name('domains.destroy');
 

@@ -18,12 +18,20 @@ use App\Jobs\ImportExcel;
 
 class DomainValidController extends Controller
 {
-    public function show(Request $request)
+    public function index(Request $request)
     {
-        $domains = Domain::whereTeamId($request->user()->currentTeam->id)->paginate(25);
+        $domains = Domain::query()
+            ->whereTeamId($request->user()->currentTeam->id)
+            ->search($request['search'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(25)
+            ->appends([
+                'search' => $request['search'],
+            ]);
+
         $bot = BotNotify::whereTeamId($request->user()->currentTeam->id)->first();
 
-        return Inertia::render('Domain/Show', [
+        return Inertia::render('Domain/Index', [
             'domains' => DomainResource::collection($domains),
             'bot' => $bot,
         ]);
@@ -37,7 +45,7 @@ class DomainValidController extends Controller
 
         $path = $request->file('domains')->store('domains');
 
-        ImportExcel::dispatch($path, auth()->user()->currentTeam->id);
+        ImportExcel::dispatchSync($path, auth()->user()->currentTeam->id);
 
         return back();
     }

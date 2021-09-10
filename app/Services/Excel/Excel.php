@@ -35,6 +35,12 @@ class Excel
     public function import($file, $teamId)
     {
         FastExcel::import($file, function ($line) use ($teamId) {
+            $nameservers = [];
+            for ($i = 1; $i < 13; $i++) {
+                if (strlen($line['名稱伺服器' . $i]) > 0) {
+                    $nameservers[] = $line['名稱伺服器' . $i];
+                }
+            }
             $this->add([
                 'team_id' => $teamId,
                 'name' => $line['網域名稱'],
@@ -43,7 +49,7 @@ class Excel
                 'product' => $line['產品'],
                 'submit' => $line['提交者'],
                 'dns' => $line['DNS'],
-                'nameservers' => json_encode(explode(",", $line['名稱伺服器'])),
+                'nameservers' => json_encode($nameservers),
                 'vendor' => $line['域名商'],
                 'remark' => $line['備註'],
             ]);
