@@ -100,34 +100,38 @@
 
                   <template #content>
                     <div class="w-60">
-                      <template v-if="$page.props.jetstream.hasTeamFeatures">
+                      <template v-if="$page.props.can.see_admin">
                         <!-- User Management -->
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                          管理使用者
-                        </div>
+                        <template v-if="$page.props.can.management_user">
+                          <div class="block px-4 py-2 text-xs text-gray-400">
+                            管理使用者
+                          </div>
 
-                        <jet-dropdown-link :href="route('users.index')">
-                          使用者列表
-                        </jet-dropdown-link>
-                        <jet-dropdown-link :href="route('users.create')">
-                          新增使用者
-                        </jet-dropdown-link>
+                          <jet-dropdown-link :href="route('users.index')">
+                            使用者列表
+                          </jet-dropdown-link>
+                          <jet-dropdown-link :href="route('users.create')">
+                            新增使用者
+                          </jet-dropdown-link>
 
-                        <div class="border-t border-gray-100"></div>
+                          <div class="border-t border-gray-100"></div>
+                        </template>
 
                         <!-- Team Management -->
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                          管理專案
-                        </div>
+                        <template v-if="$page.props.can.management_team">
+                          <div class="block px-4 py-2 text-xs text-gray-400">
+                            管理專案
+                          </div>
 
-                        <jet-dropdown-link :href="route('teams.index')">
-                          專案列表
-                        </jet-dropdown-link>
-                        <jet-dropdown-link :href="route('teams.create')">
-                          建立新專案
-                        </jet-dropdown-link>
+                          <jet-dropdown-link :href="route('teams.index')">
+                            專案列表
+                          </jet-dropdown-link>
+                          <jet-dropdown-link :href="route('teams.create')">
+                            建立新專案
+                          </jet-dropdown-link>
 
-                        <div class="border-t border-gray-100"></div>
+                          <div class="border-t border-gray-100"></div>
+                        </template>
 
                         <!-- Role Management -->
                         <div class="block px-4 py-2 text-xs text-gray-400">
@@ -298,7 +302,7 @@
 
                   <template #content>
                     <!-- Account Management -->
-                    <div class="block px-4 py-2 text-xs text-gray-400">
+                    <!-- <div class="block px-4 py-2 text-xs text-gray-400">
                       管理帳戶
                     </div>
 
@@ -313,7 +317,7 @@
                       API Tokens
                     </jet-dropdown-link>
 
-                    <div class="border-t border-gray-100"></div>
+                    <div class="border-t border-gray-100"></div> -->
 
                     <!-- Authentication -->
                     <form @submit.prevent="logout">

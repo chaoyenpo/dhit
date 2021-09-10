@@ -39,7 +39,9 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'can' => [
-                'see_admin' => !!auth()->user()?->roles()->count()
+                'see_admin' => !!auth()->user()?->roles()->count(),
+                'management_user' => auth()->user()?->hasPermissionTo('management user'),
+                'management_team' => auth()->user()?->hasPermissionTo('management team'),
             ],
         ]);
     }
