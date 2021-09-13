@@ -28,12 +28,12 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'company_name' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:255'],
+            'code' => ['required', 'string', 'max:255', 'exists:invitation_codes'],
         ])->validate();
 
-        $invitationCode = InvitationCode::whereCode($input['code']);
+        $invitationCode = InvitationCode::whereCode($input['code'])->first();
 
-        return DB::transaction(function () use ($input) {
+        return DB::transaction(function () use ($input, $invitationCode) {
             $company = Company::create([
                 'name' => $input['company_name'],
             ]);
@@ -42,9 +42,10 @@ class CreateNewUser implements CreatesNewUsers
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'root_user' => true,
-            ]), function (User $user) {
+            ]), function (User $user) use ($invitationCode) {
                 $user->assignRole('super_admin');
                 $this->createTeam($user);
+                $invitationCode->delete();
             });
         });
     }

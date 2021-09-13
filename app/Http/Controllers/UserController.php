@@ -46,6 +46,7 @@ class UserController extends Controller
             'email' => $request->email,
             'name' => $request->name,
             'organization' => $request->organization,
+            'code' => $request->code,
         ])));
 
         return back()->with('flash', [
