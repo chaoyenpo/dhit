@@ -19,6 +19,38 @@
       </div>
 
       <div class="col-span-6 sm:col-span-4">
+        <jet-label for="domain_expired_at" value="域名到期時間" />
+
+        <jet-input
+          id="domain_expired_at"
+          type="date"
+          class="mt-1 block w-full"
+          v-model="form.domain_expired_at"
+        />
+
+        <jet-input-error
+          :message="form.errors.domain_expired_at"
+          class="mt-2"
+        />
+      </div>
+
+      <div class="col-span-6 sm:col-span-4">
+        <jet-label for="certificate_expired_at" value="憑證到期時間" />
+
+        <jet-input
+          id="certificate_expired_at"
+          type="date"
+          class="mt-1 block w-full"
+          v-model="form.certificate_expired_at"
+        />
+
+        <jet-input-error
+          :message="form.errors.certificate_expired_at"
+          class="mt-2"
+        />
+      </div>
+
+      <div class="col-span-6 sm:col-span-4">
         <jet-label for="product" value="產品" />
 
         <jet-input
@@ -146,6 +178,7 @@ import JetInput from "@/Jetstream/Input";
 import JetInputError from "@/Jetstream/InputError";
 import JetLabel from "@/Jetstream/Label";
 import JetCheckbox from "@/Jetstream/Checkbox";
+import moment from "moment";
 
 export default {
   components: {
@@ -164,8 +197,12 @@ export default {
     return {
       form: this.$inertia.form({
         name: this.domain.name,
-        domain_expired_at: this.domain.domain_expired_at,
-        certificate_expired_at: this.domain.certificate_expired_at,
+        domain_expired_at: moment(this.domain.domain_expired_at).format(
+          "yyyy-MM-DD"
+        ),
+        certificate_expired_at: moment(
+          this.domain.certificate_expired_at
+        ).format("yyyy-MM-DD"),
         product: this.domain.product,
         _submit: this.domain.submit,
         dns: this.domain.dns,

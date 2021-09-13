@@ -279,6 +279,20 @@ import JetInput from "@/Jetstream/Input";
 import { SearchIcon } from "@heroicons/vue/outline";
 import defaults from "lodash/defaults";
 
+function getQueryStringParams(query) {
+  return query
+    ? (/^[?#]/.test(query) ? query.slice(1) : query)
+        .split("&")
+        .reduce((params, param) => {
+          let [key, value] = param.split("=");
+          params[key] = value
+            ? decodeURIComponent(value.replace(/\+/g, " "))
+            : "";
+          return params;
+        }, {})
+    : {};
+}
+
 export default {
   components: {
     JetCheckbox,
@@ -313,7 +327,7 @@ export default {
       form: this.$inertia.form({
         selected: [],
       }),
-      search: "",
+      search: route().params.search || "",
     };
   },
 
@@ -344,8 +358,6 @@ export default {
     },
 
     updateQueryString(value) {
-      //   defaults(value, route().params);
-
       this.$inertia.get(route("domains.index"), defaults(value, { page: 1 }), {
         preserveState: true,
         preserveScroll: true,

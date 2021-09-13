@@ -10,6 +10,7 @@ use App\Jobs\ImportExcel;
 use App\Models\BotNotify;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
@@ -70,6 +71,8 @@ class DomainValidController extends Controller
 
         $domain->forceFill([
             'name' => $request['name'],
+            'domain_expired_at' => $request['domain_expired_at'],
+            'certificate_expired_at' => $request['certificate_expired_at'],
             'product' => $request['product'],
             'submit' => $request['_submit'],
             'dns' => $request['dns'],
