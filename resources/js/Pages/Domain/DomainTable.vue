@@ -227,7 +227,11 @@
                     text-gray-900
                   "
                 >
-                  {{ domain.name }}
+                  <inertia-link :href="route('domains.show', domain)">
+                    <button class="cursor-pointer text-sm underline">
+                      {{ domain.name }}
+                    </button>
+                  </inertia-link>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ domain.domain_expired_at }}

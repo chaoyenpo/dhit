@@ -36,7 +36,7 @@ class Excel
     {
         FastExcel::import($file, function ($line) use ($teamId) {
             $nameservers = [];
-            for ($i = 1; $i < 13; $i++) {
+            for ($i = 1; $i < 3; $i++) {
                 if (strlen($line['名稱伺服器' . $i]) > 0) {
                     $nameservers[] = $line['名稱伺服器' . $i];
                 }

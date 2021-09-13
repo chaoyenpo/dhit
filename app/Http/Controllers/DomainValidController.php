@@ -6,15 +6,16 @@ use App\Models\Bot;
 use Inertia\Inertia;
 use ReflectionMethod;
 use App\Models\Domain;
+use App\Jobs\ImportExcel;
 use App\Models\BotNotify;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Domain as DomainResource;
-use App\Jobs\ImportExcel;
 
 class DomainValidController extends Controller
 {
@@ -37,6 +38,15 @@ class DomainValidController extends Controller
         ]);
     }
 
+    public function show(Request $request, $domainId)
+    {
+        $domain = Domain::findOrFail($domainId);
+
+        return Inertia::render('Domain/Show', [
+            'domain' => $domain
+        ]);
+    }
+
     public function store(Request $request)
     {
         Validator::make($request->all(), [
@@ -48,6 +58,27 @@ class DomainValidController extends Controller
         ImportExcel::dispatchSync($path, auth()->user()->currentTeam->id);
 
         return back();
+    }
+
+    public function update(Request $request, $domainId)
+    {
+        $domain = Domain::findOrFail($domainId);
+
+        Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', Rule::unique('domains')->ignore($domainId)],
+        ])->validateWithBag('updateDomain');
+
+        $domain->forceFill([
+            'name' => $request['name'],
+            'product' => $request['product'],
+            'submit' => $request['_submit'],
+            'dns' => $request['dns'],
+            'nameservers' => $request['nameservers'],
+            'vendor' => $request['vendor'],
+            'remark' => $request['remark'],
+        ])->save();
+
+        return back(303);
     }
 
     public function destroy(Request $request)

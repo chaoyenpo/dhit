@@ -3,14 +3,14 @@
 </template>
 
 <script setup>
-import { onMounted, defineProps, defineEmit, ref } from "vue";
+import { onMounted, defineProps, defineEmits, ref } from "vue";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
 const props = defineProps({
   modelValue: String,
 });
 
-const emit = defineEmit(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const dom = ref();
 
