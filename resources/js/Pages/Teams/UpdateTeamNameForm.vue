@@ -47,8 +47,6 @@
             v-for="permission in availablePermissions"
             :key="permission.slug"
           >
-            {{ permission.slug }}
-            {{ form.permissions }}
             <label class="flex items-center">
               <jet-checkbox
                 :value="permission.slug"
@@ -107,10 +105,10 @@ export default {
         permissions: this.team.features,
       }),
       availablePermissions: [
-        {
-          name: "Webhook 接收器",
-          slug: "webhook_receiver",
-        },
+        // {
+        //   name: "Webhook 接收器",
+        //   slug: "webhook_receiver",
+        // },
         {
           name: "網域通知服務",
           slug: "domain_notify",

@@ -1,0 +1,2 @@
+網域名稱[必填],域名到期時間[必填],憑證到期時間,產品1,提交者,DNS,名稱伺服器,域名商,備註
+example.com,2021-10-22,2021-10-22,js,fish,cloudflare,"ns1.com,ns2.com",GoDaddy,這是範例域名

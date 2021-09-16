@@ -4,17 +4,19 @@
 
     <template #description>
       <div class="mt-6 text-gray-500">
-        範本連結：
         <a
-          href="https://bit.ly/2S8qi8q"
+          href="/domains.csv"
           class="text-sm text-gray-700 underline"
           target="_blank"
         >
-          https://bit.ly/2S8qi8q
+          下載 CSV 範本檔案
         </a>
       </div>
 
-      <div class="mt-6 text-gray-500">網域名稱若相同則會覆蓋舊資料。</div>
+      <div class="mt-6 text-gray-500">
+        在試算表應用程式 (例如 Google 試算表或 Microsoft Excel) 中開啟 CSV
+        檔案。
+      </div>
     </template>
 
     <template #form>

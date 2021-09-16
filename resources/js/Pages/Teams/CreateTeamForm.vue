@@ -76,10 +76,10 @@ export default {
         permissions: [],
       }),
       availablePermissions: [
-        {
-          name: "Webhook 接收器",
-          slug: "webhook_receiver",
-        },
+        // {
+        //   name: "Webhook 接收器",
+        //   slug: "webhook_receiver",
+        // },
         {
           name: "網域通知服務",
           slug: "domain_notify",
