@@ -10,14 +10,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "https://nova.laravel.com",
-            "options": {
-                "http": {
-                    "header": [
-                        "API-TOKEN: nZnxNGrGbRuT6WwaVkUEGXMJSswOlhGDSVimKQwM9"
-                    ]
-                }
-            }
+            "url": "https://nova.laravel.com"
         }
     ],
     "require": {
