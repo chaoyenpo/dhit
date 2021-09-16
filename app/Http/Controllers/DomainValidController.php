@@ -8,15 +8,20 @@ use ReflectionMethod;
 use App\Models\Domain;
 use App\Jobs\ImportExcel;
 use App\Models\BotNotify;
+use App\Rules\FileNotEmpty;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use NotificationChannels\Telegram\Telegram;
+use Rap2hpoutre\FastExcel\Facades\FastExcel;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Domain as DomainResource;
+use Facades\App\Services\Rayquaza\Rayquaza;
 
 class DomainValidController extends Controller
 {
@@ -51,14 +56,18 @@ class DomainValidController extends Controller
     public function store(Request $request)
     {
         Validator::make($request->all(), [
-            'domains' => ['required', 'file'],
+            'file' => ['required', 'file', new FileNotEmpty()],
         ])->validateWithBag('uploadDomain');
 
-        $path = $request->file('domains')->store('domains');
+        $filePath = $request->file('file')->path();
+        $newFilePath =  $filePath . '.' . $request->file('file')->getClientOriginalExtension();
+        move_uploaded_file($filePath, $newFilePath);
 
-        ImportExcel::dispatchSync($path, auth()->user()->currentTeam->id);
+        Rayquaza::import($newFilePath, auth()->user());
 
-        return back();
+        return back()->with('flash', [
+            'banner' => '已成功大量上傳網域資訊。'
+        ]);
     }
 
     public function update(Request $request, $domainId)
@@ -92,7 +101,7 @@ class DomainValidController extends Controller
 
         Domain::destroy($request->selected);
 
-        return redirect()->intended(route('domains'));
+        return redirect()->intended(route('domains.index'));
     }
 
     public function link(Request $request)

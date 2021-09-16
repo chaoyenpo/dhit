@@ -32,7 +32,7 @@
 
         <jet-section-border />
 
-        <domain-table />
+        <domain-table :user="$page.props.user" />
       </div>
     </div>
   </app-layout>

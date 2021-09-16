@@ -3,7 +3,7 @@
 namespace App\Services\Excel;
 
 use App\Models\Domain;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Rap2hpoutre\FastExcel\Facades\FastExcel;
 
 class Excel
@@ -35,21 +35,16 @@ class Excel
     public function import($file, $teamId)
     {
         FastExcel::import($file, function ($line) use ($teamId) {
-            $nameservers = [];
-            for ($i = 1; $i < 3; $i++) {
-                if (strlen($line['名稱伺服器' . $i]) > 0) {
-                    $nameservers[] = $line['名稱伺服器' . $i];
-                }
-            }
             $this->add([
                 'team_id' => $teamId,
-                'name' => $line['網域名稱'],
-                'domain_expired_at' => $line['域名到期時間'],
-                'certificate_expired_at' => $line['憑證到期時間'] ?: null,
+                'name' => $line['網域名稱[必填]'],
+                'domain_expired_at' => Carbon::parse($line['域名到期時間[必填]']),
+                'certificate_expired_at' =>
+                $line['憑證到期時間'] ? Carbon::parse($line['憑證到期時間']) : null,
                 'product' => $line['產品'],
                 'submit' => $line['提交者'],
                 'dns' => $line['DNS'],
-                'nameservers' => json_encode($nameservers),
+                'nameservers' => json_encode(explode(",", $line['名稱伺服器'])),
                 'vendor' => $line['域名商'],
                 'remark' => $line['備註'],
             ]);

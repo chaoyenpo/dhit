@@ -279,20 +279,6 @@ import JetInput from "@/Jetstream/Input";
 import { SearchIcon } from "@heroicons/vue/outline";
 import defaults from "lodash/defaults";
 
-function getQueryStringParams(query) {
-  return query
-    ? (/^[?#]/.test(query) ? query.slice(1) : query)
-        .split("&")
-        .reduce((params, param) => {
-          let [key, value] = param.split("=");
-          params[key] = value
-            ? decodeURIComponent(value.replace(/\+/g, " "))
-            : "";
-          return params;
-        }, {})
-    : {};
-}
-
 export default {
   components: {
     JetCheckbox,
@@ -301,6 +287,7 @@ export default {
     Pagination,
     SearchIcon,
   },
+
   computed: {
     selectAll: {
       get: function () {
@@ -321,6 +308,7 @@ export default {
       },
     },
   },
+
   data() {
     return {
       debouncer: null,
@@ -333,6 +321,15 @@ export default {
 
   created() {
     this.debouncer = _.debounce((callback) => callback(), 500);
+  },
+
+  mounted() {
+    Echo.private(`App.Models.User.${this.$page.props.user.id}`).listen(
+      "ImportCompleted",
+      (e) => {
+        this.$inertia.reload({ only: ["domains"] });
+      }
+    );
   },
 
   methods: {

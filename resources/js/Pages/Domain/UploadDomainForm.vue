@@ -22,9 +22,9 @@
         <input
           type="file"
           ref="file"
-          @input="form.domains = $event.target.files[0]"
+          accept=".csv"
+          @input="form.file = $event.target.files[0]"
         />
-        <div class="mt-6 text-gray-500">支援 Excel (.xlsx)</div>
 
         <progress
           v-if="form.progress"
@@ -35,6 +35,8 @@
 
           {#if $form.progress} {$form.progress.percentage}% {/if} %
         </progress>
+
+        <jet-input-error :message="form.errors.file" class="mt-2" />
       </div>
     </template>
 
@@ -44,7 +46,7 @@
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
       >
-        匯入
+        上傳
       </jet-button>
     </template>
   </jet-form-section>
@@ -71,7 +73,7 @@ export default {
   setup() {
     const file = ref();
     const form = useForm({
-      domains: null,
+      file: null,
     });
 
     function submit() {
