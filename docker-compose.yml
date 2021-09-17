@@ -11,7 +11,6 @@ services:
         ports:
             - '${APP_PORT:-80}:80'
             - 8080:8080
-            - 6001:6001
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
@@ -70,6 +69,14 @@ services:
             - '/dev/shm:/dev/shm'
        networks:
            - sail
+    pws:
+        image: 'quay.io/soketi/pws:latest-16-alpine'
+        environment:
+            DEBUG: '1'
+        ports:
+            - '${PWS_PORT:-6001}:6001'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge

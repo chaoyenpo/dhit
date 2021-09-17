@@ -35,6 +35,6 @@ class TelegramConnected implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('webhook.receiver.'. $this->token);
+        return new PrivateChannel('webhook.receiver.' . $this->token);
     }
 }
