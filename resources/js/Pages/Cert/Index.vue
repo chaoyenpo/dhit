@@ -2,16 +2,12 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        網域到期通知
+        SSL 憑證
       </h2>
     </template>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <upload-domain-form />
-
-        <jet-section-border />
-
         <domain-table :user="$page.props.user" />
       </div>
     </div>

@@ -5,9 +5,11 @@ use App\Models\Domain;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CertController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AlertController;
 use Rap2hpoutre\FastExcel\Facades\FastExcel;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleAdminController;
@@ -69,6 +71,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/domains', [DomainValidController::class, 'store'])->name('domains.store');
     Route::put('/domains/{domain}', [DomainValidController::class, 'update'])->name('domains.update');
     Route::delete('/domains', [DomainValidController::class, 'destroy'])->name('domains.destroy');
+
+    Route::get('/certs', [CertController::class, 'index'])->name('certs.index');
+
+    Route::get('/alerts', [AlertController::class, 'index'])->name('alerts.index');
 
     Route::get('/admin', [AdminController::class, 'show'])->name('admin');
 

@@ -19,13 +19,12 @@ class Domain extends JsonResource
             'name' => $this->name,
             'tag' => $this->tag,
             'domain_expired_at' => $this->domain_expired_at->toDateString(),
-            'certificate_expired_at' => $this->certificate_expired_at ? $this->certificate_expired_at->toDateString() : '',
-            'product' => $this->product,
-            'submit' => $this->submit,
             'dns' => $this->dns,
             'nameservers' => $this->nameservers,
             'vendor' => $this->vendor,
+            'vendor_account' => $this->vendor_account,
             'remark' => $this->remark,
+            'use' => $this->use,
         ];
     }
 }

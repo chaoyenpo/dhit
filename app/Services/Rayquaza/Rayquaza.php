@@ -15,15 +15,15 @@ class Rayquaza
      * @var array
      */
     public $columnNames = [
+        '域名商',
+        '帳號',
+        '分類',
         '網域名稱[必填]',
         '域名到期時間[必填]',
-        '憑證到期時間',
-        '產品',
-        '提交者',
         'DNS',
         '名稱伺服器',
-        '域名商',
         '備註',
+        '有無使用',
     ];
 
     public $requiredColumnNames = [

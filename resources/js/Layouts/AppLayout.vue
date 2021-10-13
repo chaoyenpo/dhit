@@ -43,7 +43,37 @@
                   :href="route('domains.index')"
                   :active="route().current('domains.index')"
                 >
-                  網域到期通知
+                  網域
+                </jet-nav-link>
+              </div>
+              <!-- <div
+                v-if="
+                  $page.props.user.current_team.features.includes(
+                    'domain_notify'
+                  )
+                "
+                class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
+              >
+                <jet-nav-link
+                  :href="route('certs.index')"
+                  :active="route().current('certs.index')"
+                >
+                  SSL 憑證
+                </jet-nav-link>
+              </div> -->
+              <div
+                v-if="
+                  $page.props.user.current_team.features.includes(
+                    'domain_notify'
+                  )
+                "
+                class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
+              >
+                <jet-nav-link
+                  :href="route('alerts.index')"
+                  :active="route().current('alerts.index')"
+                >
+                  警示通知
                 </jet-nav-link>
               </div>
             </div>

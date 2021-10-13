@@ -37,16 +37,15 @@ class Excel
         FastExcel::import($file, function ($line) use ($teamId) {
             $this->add([
                 'team_id' => $teamId,
+                'vendor' => $line['域名商'],
+                'vendor_account' => $line['帳號'],
+                'tag' => $line['分類'],
                 'name' => $line['網域名稱[必填]'],
                 'domain_expired_at' => Carbon::parse($line['域名到期時間[必填]']),
-                'certificate_expired_at' =>
-                $line['憑證到期時間'] ? Carbon::parse($line['憑證到期時間']) : null,
-                'product' => $line['產品'],
-                'submit' => $line['提交者'],
                 'dns' => $line['DNS'],
                 'nameservers' => json_encode(explode(",", $line['名稱伺服器'])),
-                'vendor' => $line['域名商'],
                 'remark' => $line['備註'],
+                'use' => $line['有無使用'],
             ]);
 
             if (count($this->rows) === $this->chunkSize()) {

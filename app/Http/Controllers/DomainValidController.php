@@ -14,14 +14,16 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Facades\App\Services\Rayquaza\Rayquaza;
 use NotificationChannels\Telegram\Telegram;
 use Rap2hpoutre\FastExcel\Facades\FastExcel;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Domain as DomainResource;
-use Facades\App\Services\Rayquaza\Rayquaza;
 
 class DomainValidController extends Controller
 {
@@ -79,15 +81,15 @@ class DomainValidController extends Controller
         ])->validateWithBag('updateDomain');
 
         $domain->forceFill([
+            'tag' => $request['tag'],
             'name' => $request['name'],
             'domain_expired_at' => $request['domain_expired_at'],
-            'certificate_expired_at' => $request['certificate_expired_at'],
-            'product' => $request['product'],
-            'submit' => $request['_submit'],
             'dns' => $request['dns'],
             'nameservers' => $request['nameservers'],
             'vendor' => $request['vendor'],
+            'vendor_account' => $request['vendor_account'],
             'remark' => $request['remark'],
+            'use' => $request['use'],
         ])->save();
 
         return back(303);
