@@ -1,22 +1,23 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">網域</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">分析</h2>
     </template>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <upload-domain-form />
-
-        <jet-section-border />
-
-        <domain-table :user="$page.props.user" />
+        <iframe
+          :src="$page.props.iframeUrl"
+          frameborder="0"
+          allowtransparency
+        ></iframe>
       </div>
     </div>
   </app-layout>
 </template>
 
 <script>
+import { ref } from "vue";
 import AppLayout from "@/Layouts/AppLayout";
 import JetButton from "@/Jetstream/Button";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
@@ -44,6 +45,14 @@ export default {
       processing: false,
     };
   },
+
+mounted() {
+    const iFrame = ref();
+
+    document.addEventListener('DOMContentLoaded', function(e) {
+        
+    });
+},
 
   methods: {
     connectTelegramGroup() {

@@ -80,7 +80,7 @@
                     tracking-wider
                   "
                 >
-                  域名商
+                  網域廠商
                 </th>
                 <th
                   scope="col"
@@ -94,7 +94,7 @@
                     tracking-wider
                   "
                 >
-                  帳號
+                  編號
                 </th>
                 <th
                   scope="col"
@@ -108,7 +108,7 @@
                     tracking-wider
                   "
                 >
-                  分類
+                  名稱
                 </th>
                 <th
                   scope="col"
@@ -122,7 +122,7 @@
                     tracking-wider
                   "
                 >
-                  網域名稱
+                  金額
                 </th>
                 <th
                   scope="col"
@@ -136,7 +136,7 @@
                     tracking-wider
                   "
                 >
-                  域名到期時間
+                  域名
                 </th>
                 <th
                   scope="col"
@@ -150,7 +150,7 @@
                     tracking-wider
                   "
                 >
-                  DNS
+                  用途系統
                 </th>
                 <th
                   scope="col"
@@ -164,7 +164,7 @@
                     tracking-wider
                   "
                 >
-                  名稱伺服器
+                  購買日期
                 </th>
                 <th
                   scope="col"
@@ -178,21 +178,7 @@
                     tracking-wider
                   "
                 >
-                  備註
-                </th>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
-                >
-                  有無使用
+                  到期日
                 </th>
               </tr>
             </thead>
@@ -237,11 +223,6 @@
                   "
                 >
                   {{ domain.name }}
-                  <!-- <inertia-link :href="route('domains.show', domain)">
-                    <button class="cursor-pointer text-sm underline">
-                      {{ domain.name }}
-                    </button>
-                  </inertia-link> -->
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ domain.domain_expired_at }}
@@ -250,23 +231,10 @@
                   {{ domain.dns }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <template
-                    v-for="nameserver in domain.nameservers"
-                    :key="nameserver"
-                  >
-                    <p>{{ nameserver }}</p>
-                  </template>
+                  {{ domain.dns }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ domain.remark }}
-                </td>
-                <td
-                  :class="[
-                    domain.use ? 'text-green-500' : 'text-gray-500',
-                    'px-6 py-4 whitespace-nowrap text-sm',
-                  ]"
-                >
-                  {{ domain.use ? "使用中" : "未使用" }}
                 </td>
               </tr>
             </tbody>

@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlertController;
 use Rap2hpoutre\FastExcel\Facades\FastExcel;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleAdminController;
 use App\Http\Controllers\DomainValidController;
@@ -75,6 +76,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/certs', [CertController::class, 'index'])->name('certs.index');
 
     Route::get('/alerts', [AlertController::class, 'index'])->name('alerts.index');
+
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 
     Route::get('/admin', [AdminController::class, 'show'])->name('admin');
 

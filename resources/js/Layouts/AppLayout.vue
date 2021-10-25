@@ -46,7 +46,7 @@
                   網域
                 </jet-nav-link>
               </div>
-              <!-- <div
+              <div
                 v-if="
                   $page.props.user.current_team.features.includes(
                     'domain_notify'
@@ -60,7 +60,7 @@
                 >
                   SSL 憑證
                 </jet-nav-link>
-              </div> -->
+              </div>
               <div
                 v-if="
                   $page.props.user.current_team.features.includes(
@@ -74,6 +74,20 @@
                   :active="route().current('alerts.index')"
                 >
                   警示通知
+                </jet-nav-link>
+              </div>
+              <div
+                v-if="
+                  true ||
+                  $page.props.user.current_team.features.includes('analytics')
+                "
+                class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
+              >
+                <jet-nav-link
+                  :href="route('analytics.index')"
+                  :active="route().current('analytics.index')"
+                >
+                  分析
                 </jet-nav-link>
               </div>
             </div>
