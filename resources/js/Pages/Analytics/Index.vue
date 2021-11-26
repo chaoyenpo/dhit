@@ -5,8 +5,10 @@
     </template>
 
     <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="bg-white rounded-lg max-w-7xl py-2 mx-auto sm:px-6 lg:px-8">
         <iframe
+          v-resize="{ log: false }"
+          width="100%"
           :src="$page.props.iframeUrl"
           frameborder="0"
           allowtransparency
@@ -45,14 +47,6 @@ export default {
       processing: false,
     };
   },
-
-mounted() {
-    const iFrame = ref();
-
-    document.addEventListener('DOMContentLoaded', function(e) {
-        
-    });
-},
 
   methods: {
     connectTelegramGroup() {

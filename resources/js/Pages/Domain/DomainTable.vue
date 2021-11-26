@@ -34,7 +34,7 @@
               >
                 <span class="nfFC5c">
                   <span>名稱</span>
-                  <span class="DPvwYc hqSVVe XLHvhf">
+                  <!-- <span class="DPvwYc hqSVVe XLHvhf">
                     <svg
                       width="100%"
                       height="100%"
@@ -46,7 +46,7 @@
                         d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
                       ></path>
                     </svg>
-                  </span>
+                  </span> -->
                 </span>
               </th>
               <th style="width: 150px; min-width: 150px; max-width: 150px">

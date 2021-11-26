@@ -21,7 +21,7 @@ class AnalyticsController extends Controller
 
         $token = $config->builder()
             ->withClaim('resource', [
-                'dashboard' => 2
+                'dashboard' => 4
             ])
             ->withClaim('params', [
                 'params' => null
@@ -30,7 +30,7 @@ class AnalyticsController extends Controller
 
         $token = $token->toString();
 
-        $iframeUrl = "{$metabaseSiteUrl}/embed/dashboard/{$token}#bordered=true&titled=false";
+        $iframeUrl = "{$metabaseSiteUrl}/embed/dashboard/{$token}#bordered=false&titled=true";
 
         return Inertia::render('Analytics/Index', [
             'iframeUrl' => $iframeUrl,
